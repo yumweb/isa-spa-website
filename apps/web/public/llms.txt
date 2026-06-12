@@ -1,0 +1,17 @@
+# ISA Spa
+
+> India's luxury day spa brand with 50+ outlets. Signature massage therapies,
+> facials, foot spa & pedicure, skin and body polishing treatments. Franchise
+> and hotel-partnership opportunities available.
+
+## Key pages
+- [Services](/services): therapy menu, durations and pricing
+- [Spa Locator](/spa-locator): all outlets by city with address and phone
+- [Franchise](/franchise): franchise model and enquiry
+- [Hotel Partnership](/hotel-partnership): turnkey spa for hotels
+- [Membership](/isa-spa-membership): membership plans
+- [Blog](/blog): wellness articles
+- [Contact](/contact-us): get in touch
+
+## Contact
+Book an appointment: /appointment

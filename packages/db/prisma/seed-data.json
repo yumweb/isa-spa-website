@@ -1,0 +1,358 @@
+{
+  "testimonials": [
+    {
+      "quote": "Excellent customer service. Isa Spa is always my first pick — great ambiance with friendly staff.",
+      "name": "Likitha S Gowda · Bengaluru"
+    },
+    {
+      "quote": "Had a great experience. Great ambience, great staff and very professional. So much satisfied.",
+      "name": "Swagata Biswas · Hyderabad"
+    },
+    {
+      "quote": "The head spa is truly rejuvenating. I feel refreshed and stress-free after every single session.",
+      "name": "Anonymous Guest · Bhubaneswar"
+    }
+  ],
+  "serviceCats": [
+    {
+      "name": "Signature Therapy Treatments",
+      "tagline": "Deeply healing massages that melt away tension from head to toe.",
+      "photo": "massage therapy",
+      "items": [
+        {
+          "n": "Deep Tissue Massage",
+          "t": "60 / 90 min",
+          "p": "₹1,999",
+          "d": "Firm, focused pressure to release chronic knots and muscle tension."
+        },
+        {
+          "n": "Swedish Relaxation",
+          "t": "60 / 90 min",
+          "p": "₹1,799",
+          "d": "Long, flowing strokes that calm the nervous system and ease stress."
+        },
+        {
+          "n": "Balinese Aroma",
+          "t": "90 min",
+          "p": "₹2,499",
+          "d": "Aromatic oils and rhythmic kneading for whole-body restoration."
+        },
+        {
+          "n": "Traditional Champi",
+          "t": "45 min",
+          "p": "₹999",
+          "d": "Classic Indian head, neck & shoulder massage with herbal oil."
+        }
+      ]
+    },
+    {
+      "name": "Foot Spa & Pedicure",
+      "tagline": "Restorative rituals for tired, hard-working feet.",
+      "photo": "foot spa ritual",
+      "items": [
+        {
+          "n": "Classic Pedicure",
+          "t": "45 min",
+          "p": "₹899",
+          "d": "Soak, scrub, shape and massage for refreshed, cared-for feet."
+        },
+        {
+          "n": "Anti-Oxidant Foot Spa",
+          "t": "60 min",
+          "p": "₹1,299",
+          "d": "Detoxifying soak and mask that revives circulation and softness."
+        },
+        {
+          "n": "Brightening Pedicure",
+          "t": "60 min",
+          "p": "₹1,399",
+          "d": "De-tan and brighten with a luminous finish for sandal-ready feet."
+        },
+        {
+          "n": "Reflexology Foot Massage",
+          "t": "30 min",
+          "p": "₹799",
+          "d": "Pressure-point work that relaxes the whole body through the feet."
+        }
+      ]
+    },
+    {
+      "name": "Skin Treatments & Body Polishing",
+      "tagline": "Reveal smooth, radiant, renewed skin.",
+      "photo": "body polish",
+      "items": [
+        {
+          "n": "Full Body Polish",
+          "t": "60 min",
+          "p": "₹1,999",
+          "d": "Exfoliating scrub that buffs away dullness for a healthy glow."
+        },
+        {
+          "n": "De-Tan Body Treatment",
+          "t": "75 min",
+          "p": "₹2,299",
+          "d": "Targets uneven tone, leaving skin brighter and more even."
+        },
+        {
+          "n": "Hydrating Body Wrap",
+          "t": "75 min",
+          "p": "₹2,599",
+          "d": "Nourishing wrap that deeply moisturises and softens skin."
+        },
+        {
+          "n": "Back Cleansing Ritual",
+          "t": "45 min",
+          "p": "₹1,499",
+          "d": "A deep cleanse and polish for hard-to-reach back skin."
+        }
+      ]
+    },
+    {
+      "name": "Facial & Clean-Up Treatments",
+      "tagline": "Customised facials for a luminous, healthy complexion.",
+      "photo": "facial treatment",
+      "items": [
+        {
+          "n": "Signature Glow Facial",
+          "t": "60 min",
+          "p": "₹1,799",
+          "d": "Cleanse, exfoliate, massage and mask for instant radiance."
+        },
+        {
+          "n": "Hydra-Repair Facial",
+          "t": "75 min",
+          "p": "₹2,299",
+          "d": "Intense hydration to plump, soothe and revive dehydrated skin."
+        },
+        {
+          "n": "Express Clean-Up",
+          "t": "30 min",
+          "p": "₹1,199",
+          "d": "A quick refresh to deep-clean pores and brighten tired skin."
+        },
+        {
+          "n": "Anti-Ageing Facial",
+          "t": "75 min",
+          "p": "₹2,799",
+          "d": "Firming actives that smooth fine lines and restore vitality."
+        }
+      ]
+    }
+  ],
+  "services": [
+    {
+      "title": "Signature Therapy",
+      "desc": "Deep tissue, Swedish, Balinese & aroma-relax massages by trained therapists.",
+      "from": "From ₹1,499",
+      "photo": "signature massage"
+    },
+    {
+      "title": "Foot Spa & Pedicure",
+      "desc": "Anti-oxidant, brightening & de-tanning rituals for tired, pampered feet.",
+      "from": "From ₹899",
+      "photo": "foot spa ritual"
+    },
+    {
+      "title": "Skin & Body Polishing",
+      "desc": "Body polish & wraps that leave skin smooth, radiant and renewed.",
+      "from": "From ₹1,999",
+      "photo": "body polish"
+    },
+    {
+      "title": "Facial & Clean-Up",
+      "desc": "Customised facials and clean-ups for a luminous, healthy glow.",
+      "from": "From ₹1,199",
+      "photo": "facial treatment"
+    }
+  ],
+  "franchiseWhy": [
+    {
+      "num": "01",
+      "title": "A trusted, loved brand",
+      "desc": "Step into a name synonymous with luxury, quality and exceptional service — already enjoying customer loyalty and credibility."
+    },
+    {
+      "num": "02",
+      "title": "End-to-end training",
+      "desc": "Extensive training across treatments, customer service, business management and marketing for you and your team."
+    },
+    {
+      "num": "03",
+      "title": "Proven, profitable model",
+      "desc": "Unit economics refined across 50+ spas. A booming wellness market and strong, repeatable returns."
+    },
+    {
+      "num": "04",
+      "title": "Site selection & design",
+      "desc": "We help you choose a high-footfall location and deliver a turnkey boutique spa fit-out."
+    },
+    {
+      "num": "05",
+      "title": "Marketing that fills chairs",
+      "desc": "National brand campaigns plus local activation, digital and reputation management on your behalf."
+    },
+    {
+      "num": "06",
+      "title": "Backed by Impel Ventures",
+      "desc": "The group behind Studio11, Impel Overseas, DentalOne & GaadiSaaf — a pioneer in Indian franchising."
+    }
+  ],
+  "franchiseSteps": [
+    {
+      "step": "1",
+      "title": "Enquire",
+      "desc": "Share your city and investment capacity. We send the franchise kit within 24 hours."
+    },
+    {
+      "step": "2",
+      "title": "Evaluate",
+      "desc": "Review unit economics with our team and finalise your location together."
+    },
+    {
+      "step": "3",
+      "title": "Build",
+      "desc": "We design, fit out and staff your spa while training your team to Isa standards."
+    },
+    {
+      "step": "4",
+      "title": "Open",
+      "desc": "Launch with a marketing blitz and ongoing operational support from day one."
+    }
+  ],
+  "hotelModels": [
+    {
+      "tag": "Fully Managed",
+      "title": "We run it for you",
+      "desc": "Isa designs, staffs and operates the spa entirely. You provide the space; we deliver the experience and a share of revenue.",
+      "best": "Best for: hotels wanting zero operational involvement."
+    },
+    {
+      "tag": "Revenue Share",
+      "title": "Partner & profit",
+      "desc": "A collaborative model where investment and returns are shared, aligning both teams around guest satisfaction and growth.",
+      "best": "Best for: properties seeking aligned, long-term upside."
+    },
+    {
+      "tag": "Licensed",
+      "title": "Your team, our brand",
+      "desc": "Operate under the Isa Spa name with our SOPs, training, product line and brand standards backing your in-house team.",
+      "best": "Best for: groups with existing wellness operations."
+    }
+  ],
+  "hotelBenefits": [
+    {
+      "title": "Elevated guest experience",
+      "desc": "A signature wellness amenity that lifts reviews, loyalty and average length of stay."
+    },
+    {
+      "title": "A new revenue stream",
+      "desc": "Monetise underused space with treatments, memberships and retail — with minimal capex from you."
+    },
+    {
+      "title": "Trusted brand on your floor",
+      "desc": "Borrow the equity of India’s most luxurious day spa chain to differentiate your property."
+    },
+    {
+      "title": "Zero operational burden",
+      "desc": "We handle hiring, training, supplies, compliance and day-to-day management."
+    }
+  ],
+  "aboutValues": [
+    {
+      "title": "Reverence",
+      "desc": "Every guest is treated with the grace their unique energy deserves."
+    },
+    {
+      "title": "Mastery",
+      "desc": "Highly trained therapists and bespoke therapies, never one-size-fits-all."
+    },
+    {
+      "title": "Accessibility",
+      "desc": "World-class spa experiences made an affordable luxury, in your neighbourhood."
+    }
+  ],
+  "aboutPresence": [
+    "Hyderabad",
+    "Bengaluru",
+    "Varanasi",
+    "Tirupati",
+    "Dharamshala",
+    "Bhubaneswar",
+    "Gulbarga"
+  ],
+  "locations": [
+    {
+      "city": "Hyderabad",
+      "area": "Begumpet",
+      "addr": "S.P. Road, Begumpet, Hyderabad 500016",
+      "phone": "99599 95370"
+    },
+    {
+      "city": "Hyderabad",
+      "area": "Kokapet",
+      "addr": "Financial District, Kokapet, Hyderabad 500075",
+      "phone": "99599 95371"
+    },
+    {
+      "city": "Hyderabad",
+      "area": "HITEC City",
+      "addr": "Madhapur, HITEC City, Hyderabad 500081",
+      "phone": "99599 95372"
+    },
+    {
+      "city": "Bengaluru",
+      "area": "Brookfield",
+      "area2": "",
+      "addr": "ITPL Main Road, Brookfield, Bengaluru 560037",
+      "phone": "93529 70061"
+    },
+    {
+      "city": "Bengaluru",
+      "area": "Koramangala",
+      "addr": "5th Block, Koramangala, Bengaluru 560095",
+      "phone": "93529 70062"
+    },
+    {
+      "city": "Bengaluru",
+      "area": "Indiranagar",
+      "addr": "100 Ft Road, Indiranagar, Bengaluru 560038",
+      "phone": "93529 70063"
+    },
+    {
+      "city": "Varanasi",
+      "area": "Ramkatora",
+      "addr": "C 26/35, 2nd Floor, Ramkatora, Varanasi 221001",
+      "phone": "93529 70060"
+    },
+    {
+      "city": "Tirupati",
+      "area": "Tirumala Road",
+      "addr": "Tirumala Bypass Road, Tirupati 517501",
+      "phone": "90000 11223"
+    },
+    {
+      "city": "Dharamshala",
+      "area": "McLeod Ganj",
+      "addr": "Temple Road, McLeod Ganj, Dharamshala 176219",
+      "phone": "90000 11224"
+    },
+    {
+      "city": "Bhubaneswar",
+      "area": "Saheed Nagar",
+      "addr": "Janpath, Saheed Nagar, Bhubaneswar 751007",
+      "phone": "90000 11225"
+    },
+    {
+      "city": "Gulbarga",
+      "area": "Super Market",
+      "addr": "Super Market Road, Kalaburagi 585101",
+      "phone": "90000 11226"
+    },
+    {
+      "city": "Hyderabad",
+      "area": "Gachibowli",
+      "addr": "Gachibowli Main Road, Hyderabad 500032",
+      "phone": "99599 95373"
+    }
+  ]
+}
