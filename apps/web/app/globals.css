@@ -137,7 +137,23 @@ h3 {
     padding-left: 22px !important;
     padding-right: 22px !important;
   }
-  nav {
+}
+
+/* ── Header: desktop nav vs mobile drawer ── */
+.isa-mobile-toggle,
+.isa-mobile-drawer {
+  display: none;
+}
+@media (max-width: 900px) {
+  .isa-desktop-nav {
     display: none !important;
+  }
+  .isa-mobile-toggle {
+    display: inline-flex !important;
+  }
+  /* drawer only renders when open; this keeps it hidden if the viewport
+     grows back to desktop while still open */
+  .isa-mobile-drawer {
+    display: flex !important;
   }
 }
