@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { PUBLISH_STATUSES } from "../constants.js";
+import { PUBLISH_STATUSES, ROLES } from "../constants.js";
 
 /** Admin-side content schemas for CMS CRUD (validated in the API). */
 
@@ -79,8 +79,64 @@ export const testimonialSchema = z.object({
   status,
 });
 
+export const galleryItemSchema = z.object({
+  image: z.string().trim().min(1).max(500),
+  caption: z.string().trim().max(300).optional(),
+  album: z.string().trim().max(120).optional(),
+  order: z.number().int().default(0),
+});
+
+export const jobOpeningSchema = z.object({
+  title: z.string().trim().min(2).max(250),
+  slug,
+  location: z.string().trim().max(160).optional(),
+  type: z.string().trim().max(80).optional(), // "full-time", "part-time"
+  description: z.string().min(1), // rich-text HTML/JSON
+  status,
+});
+
+export const pageSchema = z.object({
+  slug,
+  title: z.string().trim().max(250).optional(),
+  blocks: z.unknown().optional(), // structured content blocks (JSON)
+  metaTitle: z.string().trim().max(200).optional(),
+  metaDescription: z.string().trim().max(400).optional(),
+});
+
+export const redirectSchema = z.object({
+  from: z.string().trim().min(1).max(500),
+  to: z.string().trim().min(1).max(1000),
+  code: z
+    .number()
+    .int()
+    .refine((c) => [301, 302, 307, 308].includes(c), "Use 301/302/307/308")
+    .default(301),
+});
+
+/** Admin user management. `password` is plaintext on the wire (TLS), hashed in the API. */
+export const userCreateSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8).max(200),
+  name: z.string().trim().max(160).optional(),
+  role: z.enum(ROLES).default("EDITOR"),
+  isActive: z.boolean().default(true),
+});
+
+export const userUpdateSchema = z.object({
+  name: z.string().trim().max(160).optional(),
+  password: z.string().min(8).max(200).optional(),
+  role: z.enum(ROLES).optional(),
+  isActive: z.boolean().optional(),
+});
+
 export type LocationInput = z.infer<typeof locationSchema>;
 export type ServiceCategoryInput = z.infer<typeof serviceCategorySchema>;
 export type ServiceInput = z.infer<typeof serviceSchema>;
 export type BlogPostInput = z.infer<typeof blogPostSchema>;
 export type TestimonialInput = z.infer<typeof testimonialSchema>;
+export type GalleryItemInput = z.infer<typeof galleryItemSchema>;
+export type JobOpeningInput = z.infer<typeof jobOpeningSchema>;
+export type PageInput = z.infer<typeof pageSchema>;
+export type RedirectInput = z.infer<typeof redirectSchema>;
+export type UserCreateInput = z.infer<typeof userCreateSchema>;
+export type UserUpdateInput = z.infer<typeof userUpdateSchema>;

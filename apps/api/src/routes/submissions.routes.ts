@@ -1,10 +1,12 @@
 import { Router } from "express";
 import rateLimit from "express-rate-limit";
 import { z } from "zod";
-import { prisma } from "@isa/db";
+import { prisma, Prisma } from "@isa/db";
 import { formSchemas, submissionEnvelope, SUBMISSION_STATUSES, FORM_TYPES } from "@isa/shared";
 import { requireAuth, requireRole } from "../middleware/auth.js";
 import { notifyNewLead } from "../services/notify.js";
+import { verifyTurnstile } from "../services/turnstile.js";
+import { HttpError } from "../middleware/error.js";
 
 export const submissionsRouter = Router();
 
@@ -24,12 +26,17 @@ submissionsRouter.post("/", submitLimiter, async (req, res, next) => {
     }
     delete data.honeypot;
 
-    // TODO: verify data.captchaToken against Turnstile when env.turnstileSecret set.
+    // Cloudflare Turnstile: no-op unless TURNSTILE_SECRET is set (see service).
+    const captchaToken = typeof data.captchaToken === "string" ? data.captchaToken : undefined;
+    if (!(await verifyTurnstile(captchaToken, req.ip))) {
+      throw new HttpError(400, "Captcha verification failed");
+    }
+    delete data.captchaToken;
 
     const submission = await prisma.formSubmission.create({
       data: {
         type,
-        payload: data,
+        payload: data as Prisma.InputJsonObject,
         sourcePage,
         ip: req.ip,
         userAgent: req.get("user-agent") ?? undefined,

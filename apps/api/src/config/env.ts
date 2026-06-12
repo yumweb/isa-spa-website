@@ -1,4 +1,5 @@
 import "dotenv/config";
+import path from "node:path";
 
 function req(key: string, fallback?: string): string {
   const v = process.env[key] ?? fallback;
@@ -28,4 +29,7 @@ export const env = {
     notifyTo: process.env.LEADS_NOTIFY_TO,
   },
   turnstileSecret: process.env.TURNSTILE_SECRET,
+  // Local media upload dir. cwd is apps/api (see ecosystem.config.cjs / dev),
+  // so this resolves to apps/api/uploads (gitignored). Served at /uploads.
+  uploadsDir: process.env.UPLOADS_DIR ?? path.resolve(process.cwd(), "uploads"),
 } as const;

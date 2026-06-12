@@ -78,22 +78,54 @@ pm2 status | pm2 logs isa-api | pm2 restart isa-web | pm2 delete ecosystem.confi
 - Monorepo, tsconfig, env template, gitignore.
 - `@isa/shared`: all form + content Zod schemas, tokens, enums.
 - `@isa/db`: full Prisma schema + singleton client + idempotent seed.
-- `api`: helmet/cors/rate-limit app; `/api/auth` (login/refresh/me); `/api` public reads (locations, services, testimonials, blog); `/api/submissions` (public POST + admin list/update + CSV export); lead email notify (no-op without SMTP).
+- `api`: helmet/cors/rate-limit app; `/api/auth` (login/refresh/me); `/api` public reads (locations, services, testimonials, blog, gallery, careers, pages, cities); `/api/submissions` (public POST + admin list/update + CSV export) with **Turnstile** verification (`services/turnstile.ts`, no-op unless `TURNSTILE_SECRET`); lead email notify (no-op without SMTP).
+- **`api` admin CMS CRUD** under `/api/admin/*` (all `requireAuth`): locations, service-categories, services, blog, testimonials, gallery, careers, pages, redirects, users (ADMIN-only), media (multer upload), settings. Generic CRUD factory in `routes/admin/_crud.ts`; SEO/date input mapping in `routes/admin/_map.ts`; every mutation writes `AuditLog` via `services/audit.ts`. Static media served at `/uploads` from `apps/api/uploads/` (gitignored, dir `env.uploadsDir`).
 - `web`: layout (fonts, org JSON-LD, Header/Footer), Home, Spa Locator (per-location JSON-LD), sitemap/robots/llms.txt, `lib/api` + `lib/seo`.
-- `admin`: login + leads inbox shell (React Query).
+- **`web` full public site to parity** — DONE. All pages built (Server Components + ISR/SSG): About (`/about-us`), Services (`/services` + `/services/[category]` w/ OfferCatalog+Service+Breadcrumb JSON-LD), Membership, Franchise (+FAQ JSON-LD), Hotel Partnership (+FAQ JSON-LD), Gallery (`next/image` grid, empty state), Blog (`/blog` + `/blog/[slug]` w/ BlogPosting+Breadcrumb JSON-LD, richtext body), Careers (`/careers` + `/careers/[slug]`), Contact, Gift Cards, Appointment (primary CTA), Spa detail (`/spa-locator/[slug]` w/ Google Maps iframe + locationJsonLd), legal (`/privacy-policy`, `/refund-policy`, `/terms` — placeholder copy, flagged). Shared components: `LeadForm` (RHF+zodResolver+honeypot, used by all 7 forms), `ui/` primitives (Section/Container/Button/Card/Field/PageHero), ServiceCard/LocationCard/BlogCard/Breadcrumbs/LegalPage. `lib/api` extended (getServiceCategory/getBlogPosts/getBlogPost/getGallery/getCareers/getCareer/getPage/getCities); `submitForm` now posts to same-origin proxy `app/api/submissions/route.ts` (keeps internal URL server-side). `lib/seo` extended (blogPostingJsonLd/serviceJsonLd/offerCatalogJsonLd/breadcrumbJsonLd/faqJsonLd). `sitemap.ts` now includes blog + careers + legal. Rich text styled via `.richtext` in globals.css (no typography-plugin dep).
+- **`admin`: full routed CMS dashboard** — DONE (Vite SPA, React Query + react-router v7). Auth context with central 401→/login handling; protected `AppShell` (sidebar + topbar/logout, Users nav hidden for non-ADMIN). Generic entity layer `src/lib/entities.ts` (`crud(entity)` factory + `useList/useSave/useRemove` hooks) over the REST contract; config-driven `ResourcePage`/`ResourceForm` (declarative `FieldDef[]` + client-side `schema.safeParse` reusing shared Zod schemas — SEO nesting, datetime, tags, JSON, media/images fields handled). Reusable components: `DataTable`, `Drawer`/`Modal`, `ConfirmDelete`, `StatusBadge`, `MediaPicker` + media-library modal. Screens/routes: `/login`; `/` Dashboard (lead + content counts, recent submissions); `/leads` (type/status filters + pagination, detail drawer to view payload / change status / assign / notes via PATCH, ADMIN-only CSV export); content CRUD `/locations`, `/service-categories`, `/services` (category selector), `/blog` (textarea body + Media cover + draft/publish + publishedAt), `/testimonials`, `/gallery`, `/careers`, `/pages`, `/redirects`; `/media` (upload/grid/delete/copy-URL), `/settings` (siteName/tagline/social via GET+PUT), `/users` (ADMIN-only create/edit/disable). No new deps; richtext/blog/job bodies use a plain `<textarea>` (WYSIWYG can come later). Passes `tsc --noEmit`. Single global stylesheet `src/styles.css` (brand tokens, no CSS framework).
+
+### API route contract (frozen — admin UI depends on it)
+
+Public reads (`/api`): `GET /locations`, `/locations/cities` (→ `{ cities }`), `/locations/:slug`, `/services` (→ `{ categories }`), `/services/:slug` (→ `{ category }` w/ services), `/testimonials`, `/blog`, `/blog/:slug`, `/gallery` (→ `{ items }`), `/careers` (→ `{ items }`, PUBLISHED), `/careers/:slug` (→ `{ item }`), `/pages/:slug` (→ `{ page }`).
+
+Admin CRUD — for each `<entity>` in {locations, service-categories, services, blog, testimonials, gallery, careers, pages, redirects, users}:
+- `GET    /api/admin/<entity>`     → `{ items }`
+- `GET    /api/admin/<entity>/:id` → `{ item }` (404 if missing)
+- `POST   /api/admin/<entity>`     → `{ item }` (201, Zod-validated body)
+- `PATCH  /api/admin/<entity>/:id` → `{ item }` (partial / `.partial()`)
+- `DELETE /api/admin/<entity>/:id` → `{ ok: true }`
+
+Special endpoints:
+- `media`: `GET /api/admin/media` → `{ items }`; `POST /api/admin/media` multipart field **`file`** (+ optional `alt`) → `{ item }` w/ `url: "/uploads/<file>"`; `DELETE /api/admin/media/:id` → `{ ok: true }`. 15 MB limit; images + pdf only.
+- `settings`: `GET /api/admin/settings` → `{ settings }` (keyed object); `PUT /api/admin/settings/:key` body `{ value }` → `{ setting }` (upsert).
+- `users` (ADMIN-only): `passwordHash` never returned (argon2); `DELETE` **soft-disables** (`isActive=false`); cannot self-demote/disable. Body schemas `userCreateSchema`/`userUpdateSchema`.
+
+Input mapping: shared content schemas nest SEO under `seo:{metaTitle,metaDescription,ogImage,canonical}` and use ISO-string `publishedAt`; the API flattens SEO to columns and coerces dates (`_map.ts`). service-categories only persist metaTitle/metaDescription.
 
 **TODO (next sessions), by phase:**
-1. **Run install + first migration** (`pnpm install`, set DB, `db:migrate`, `db:seed`) and confirm `pnpm dev` boots all three.
-2. **API admin CRUD** under `/api/admin/*`: locations, service categories/services, blog (draft/publish/schedule), testimonials, gallery, careers, pages, media upload (local→S3/R2), settings, redirects. Each writes `AuditLog`.
-3. **Web pages to parity:** About, Services (`/services` + `/services/[category]`), Membership, Franchise (+form), Hotel (+form), Gallery, Blog (`/blog` + `/blog/[slug]`), Careers, Contact (+form), Gift Cards (+form), Appointment (+form), `/spa-locator/[city]/[slug]` detail, legal pages. Build shared components (Hero, ServiceCard, LocationCard, LeadForm w/ RHF+Zod+honeypot+Turnstile, RichText).
-4. **Admin CRUD UIs** + react-router, media library, submission status workflow/assign/notes, CSV export button.
+1. **Run install + first migration** (`pnpm install` — picks up new `multer`/`@types/multer`/`@types/node` in `apps/api`, set DB, `db:migrate`, `db:seed`) and confirm `pnpm dev` boots all three. NOTE: until install runs, `apps/api` tsc reports multer module/implicit-any errors in `routes/admin/media.ts` only — expected, resolve on install.
+2. ✅ **API admin CRUD** under `/api/admin/*` — DONE (see Status above + route contract). Remaining: swap local media disk for S3/R2; blog publish-scheduling UX.
+3. ✅ **Web pages to parity** — DONE (see Status above). Remaining polish: wire Turnstile widget into `LeadForm` (sitekey `NEXT_PUBLIC_TURNSTILE_SITEKEY`; API already verifies `captchaToken`), real legal copy, real spa lat/lng + images, optional `@tailwindcss/typography` if richer blog styling wanted.
+4. ✅ **Admin CRUD UIs** + react-router, media library, submission status workflow/assign/notes, CSV export button — DONE (see `admin` in Status above). Remaining polish: WYSIWYG for blog/job bodies (currently textarea), multi-image reorder for locations/gallery, optimistic UI, settings could expose arbitrary keys (currently siteName/tagline/social only).
 5. **SEO/perf/a11y pass** (run `seo`/`seo-schema`/`seo-geo` skills, Lighthouse, Rich Results), redirect map import, WCAG AA.
-6. **Hardening:** Turnstile verification (stub in `submissions.routes.ts`), rate-limit review, integration tests (supertest), Playwright E2E, security review.
+6. **Hardening:** ✅ Turnstile verification wired (`services/turnstile.ts`, called in `submissions.routes.ts`; no-op without `TURNSTILE_SECRET`, fail-closed when set). Remaining: rate-limit review, integration tests (supertest), Playwright E2E, security review.
+
+## Verified working end-to-end (full stack runs)
+
+`pnpm install` → `docker compose up -d` → `db:migrate`/`db:seed` → `pm2 start ecosystem.config.cjs`. All 16 public routes + dynamic `/services/[category]` and `/spa-locator/[slug]` return 200; a form POST → stored lead → visible via `/api/submissions/admin`; JSON-LD present in raw SSR HTML; sitemap/robots/llms.txt serve. Admin SPA + all 12 `/api/admin/*` endpoints respond. All 4 packages pass `tsc --noEmit`.
+
+## Integration fixes already applied (don't re-introduce)
+
+- **Next.js + `@isa/shared` `.js` imports:** `apps/web/next.config.js` sets `transpilePackages: ["@isa/shared"]` + webpack `resolve.extensionAlias` (`.js`→`.ts`). Without this, Next can't resolve `./constants.js` and every page 500s.
+- **Zod schema across server→client boundary:** `LeadForm` (client) looks up its schema from `formSchemas[type]` internally — pages pass only `type`, NEVER `schema={...}` (a class instance can't cross the RSC boundary).
+- **`tsc` TS2742 in apps:** `apps/api` and `apps/admin` tsconfig set `declaration: false` (base sets it true for libs). Apps don't emit `.d.ts`, so this silences the "inferred type not portable" errors on Express routers.
+- `multer@1.x` is deprecated (works; flagged). Replace with a maintained upload lib (e.g. `@fastify/busboy`/`multer@2`) or move straight to S3/R2 presigned uploads before prod.
 
 ## Gotchas
 
-- ESM throughout (`"type": "module"`); use `.js` extensions in TS import paths for `api`/`db`/`shared`.
-- `db:migrate`/`db:seed` need a **running MySQL** and valid `DATABASE_URL`; nothing was migrated yet (no DB at scaffold time).
-- `web/lib/api.ts` is **server-only** (internal API URL) — don't import into client components; `submitForm` is the client-safe POST helper.
+- ESM throughout (`"type": "module"`); use `.js` extensions in TS import paths for `api`/`db`/`shared`. Next handles these via the extensionAlias above.
+- `db:migrate`/`db:seed` need a **running MySQL** and valid `DATABASE_URL`.
+- **Orphaned `next dev` can hold port 3000** across pm2 restarts → the new instance silently falls back to 3001 (404s on stale code). If routes 404 after a restart, check `lsof -iTCP:3000 -sTCP:LISTEN` and kill strays, then `pm2 restart isa-web`.
+- `web/lib/api.ts` `get*` helpers are **server-only** (internal API URL) — don't import into client components; `submitForm` posts to the same-origin `app/api/submissions/route.ts` proxy.
 - Prototype hero has 3 variants (Editorial/Serene/Immersive) — a prototype toggle only. Production ships **one**; current Home uses "A · Editorial". Confirm with stakeholder.
 - Real spa images/lat-lng aren't in the prototype (placeholder photo labels) — collect during content migration; locator map needs coordinates.
