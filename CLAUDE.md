@@ -2,7 +2,9 @@
 
 Redesign of **https://isaspa.in/** (India's luxury day spa, 50+ outlets). Public site is SEO/AEO/GEO-first; dynamic content (Spa Locator, Blog) and **all form submissions** are managed via a custom CMS.
 
-> Design source of truth: `../ISA Spa - Standalone.html` — a gzip-bundled **Vue prototype**. The real markup lives in its `__bundler/template` script (JSON-encoded). Decode it to read layout/content; do **not** keep the Vue/bundler runtime. Decoded seed content is already captured in `packages/db/prisma/seed-data.json`.
+> **Design source of truth:** `design-reference/project/ISA Spa.dc.html` — the clean, approved Claude Design prototype (786 lines, inline-styled, `{{ }}` template vars). This is what the public site must match pixel-for-pixel. The approved homepage hero is **Variant A · Editorial** (asymmetric: copy left, arched striped photo + floating logo badge right); variants B/C and the hero switcher are NOT built. `design-reference/chats/chat1.md` has the design intent; `design-reference/project/screenshots/` has per-page reference shots; `design-reference/project/assets/isa-logo.png` is the real logo (copied to `apps/web/public/isa-logo.png`). The older `../ISA Spa - Standalone.html` is the gzip-bundled export of the same design; seed copy is in `packages/db/prisma/seed-data.json`.
+>
+> **Visual system (built):** inline `style={{}}` objects matching the prototype's exact hex/px/gradients. Base + keyframes + responsive grid collapse classes (`.isa-grid-3/4/split`, `.isa-hero`) live in `apps/web/app/globals.css`; shared bits in `apps/web/components/site/primitives.tsx` (`Photo`, `Eyebrow`, `Heading`) + `Header.tsx`/`Footer.tsx`. `app/page.tsx` (Home) is the canonical pattern — match it when adding pages. Palette: cream `#F7F1E6`, gold `#C19A4B`/`#B0863A`/`#A8823A`, ink `#3F3B30`, espresso bands `#2C2219`→`#221A12`, card border `#ECE2CF`, soft `#FBF7EF`.
 
 ## Stack & architecture
 

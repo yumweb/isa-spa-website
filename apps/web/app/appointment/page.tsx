@@ -1,9 +1,9 @@
-import { Container } from "@/components/ui/Container";
-import { Card } from "@/components/ui/Card";
+import Link from "next/link";
 import { LeadForm, type LeadField } from "@/components/LeadForm";
-import { appointmentSchema, type AppointmentInput } from "@isa/shared";
+import { type AppointmentInput } from "@isa/shared";
 import { getLocations } from "@/lib/api";
 import { pageMeta } from "@/lib/seo";
+import { Hero } from "@/components/Hero";
 
 export const metadata = pageMeta({
   title: "Book a Spa Appointment — ISA Spa",
@@ -34,17 +34,22 @@ export default async function AppointmentPage() {
   ];
 
   return (
-    <Container className="py-16 md:py-24">
-      <div className="mx-auto max-w-2xl">
-        <div className="text-center">
-          <p className="text-sm uppercase tracking-[0.3em] text-gold-deep">Book a ritual</p>
-          <h1 className="mt-4 font-serif text-5xl text-ink">Reserve your moment of calm.</h1>
-          <p className="mt-4 text-ink-soft">
-            Share a few details and our team will confirm your appointment. Prefer to talk? Call your nearest outlet
-            from the spa locator.
-          </p>
-        </div>
-        <Card className="mt-10">
+    <>
+      <Hero
+        eyebrow="Book a ritual"
+        title="Reserve your moment of calm."
+        lead="Share a few details and our team will confirm your appointment."
+      >
+        <p style={{ fontSize: 15, color: "#8A8478", marginTop: 14 }}>
+          Prefer to talk?{" "}
+          <Link href="/spa-locator" style={{ color: "#B0863A", borderBottom: "1px solid #C8B58C", paddingBottom: 2 }}>
+            Call your nearest outlet
+          </Link>
+        </p>
+      </Hero>
+
+      <section style={{ maxWidth: 720, margin: "0 auto", padding: "56px 40px 90px" }}>
+        <div style={{ background: "#fff", border: "1px solid #ECE2CF", borderRadius: 18, padding: 40, boxShadow: "0 24px 56px rgba(80,60,30,0.08)" }}>
           <LeadForm
             type="APPOINTMENT"
             fields={fields}
@@ -53,8 +58,8 @@ export default async function AppointmentPage() {
             successTitle="Request received."
             successMessage="Our team will call or message you shortly to confirm your booking."
           />
-        </Card>
-      </div>
-    </Container>
+        </div>
+      </section>
+    </>
   );
 }

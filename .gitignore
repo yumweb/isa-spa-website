@@ -29,3 +29,8 @@ npm-debug.log*
 .idea/
 .vscode/*
 !.vscode/extensions.json
+
+# design reference: keep the spec html, logo, readme, chat; skip heavy screenshots
+design-reference/project/screenshots/
+design-reference/project/*.dc.html
+design-reference/project/ISA Spa - Standalone.html

@@ -1,9 +1,7 @@
-import { PageHero } from "@/components/ui/PageHero";
-import { Section } from "@/components/ui/Section";
-import { Card } from "@/components/ui/Card";
 import { BlogCard } from "@/components/BlogCard";
 import { getBlogPosts } from "@/lib/api";
 import { pageMeta } from "@/lib/seo";
+import { Hero } from "@/components/Hero";
 
 export const metadata = pageMeta({
   title: "Journal — Wellness & Self-care | ISA Spa",
@@ -19,27 +17,27 @@ export default async function BlogIndexPage() {
 
   return (
     <>
-      <PageHero
+      <Hero
         eyebrow="Journal"
         title="Notes on living well."
         lead="Rituals, wellness wisdom and stories from the world of ISA Spa."
       />
 
-      <Section className="pt-0">
+      <section style={{ maxWidth: 1280, margin: "0 auto", padding: "64px 40px 90px" }}>
         {posts.length === 0 ? (
-          <Card>
-            <p className="text-ink-soft">
+          <div style={{ background: "#fff", border: "1px solid #ECE2CF", borderRadius: 18, padding: "40px 36px" }}>
+            <p style={{ fontSize: 16, lineHeight: 1.7, color: "#6E6F62", margin: 0 }}>
               Our journal is just getting started. New stories on wellness and self-care are coming soon.
             </p>
-          </Card>
+          </div>
         ) : (
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24 }} className="isa-grid-3">
             {posts.map((post) => (
               <BlogCard key={post.id} post={post} />
             ))}
           </div>
         )}
-      </Section>
+      </section>
     </>
   );
 }

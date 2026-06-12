@@ -1,8 +1,6 @@
-import { PageHero } from "@/components/ui/PageHero";
-import { Section, SectionHeading } from "@/components/ui/Section";
-import { Card } from "@/components/ui/Card";
-import { ButtonLink } from "@/components/ui/Button";
+import Image from "next/image";
 import { pageMeta } from "@/lib/seo";
+import { Photo } from "@/components/site/primitives";
 import { aboutValues, aboutPresence } from "@/lib/marketing";
 
 export const metadata = pageMeta({
@@ -14,73 +12,222 @@ export const metadata = pageMeta({
 
 export default function AboutPage() {
   return (
-    <>
-      <PageHero
-        eyebrow="Our Story"
-        title="Self-care, treated as a sacred ritual."
-        lead="Isa means God. We built ISA Spa as a sanctuary where healing feels divine — a pause in the everyday that honours the body, calms the mind and restores the spirit."
-      />
+    <main>
+      {/* ===== HERO (radial, centered logo) ===== */}
+      <section
+        style={{
+          background: "radial-gradient(120% 100% at 50% 0%, #FBF6EC 0%, #F1E7D2 100%)",
+          padding: "78px 40px 60px",
+          textAlign: "center",
+        }}
+      >
+        <Image
+          src="/isa-logo.png"
+          alt="Isa Spa"
+          width={64}
+          height={64}
+          style={{ width: 64, height: "auto", opacity: 0.9, margin: "0 auto 20px" }}
+        />
+        <div style={{ fontSize: 12, letterSpacing: "0.3em", textTransform: "uppercase", color: "#A8823A", marginBottom: 16 }}>
+          Our Story
+        </div>
+        <h1
+          style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontWeight: 500,
+            fontSize: 60,
+            lineHeight: 1.13,
+            color: "#3F3B30",
+            margin: "0 auto 18px",
+            maxWidth: 760,
+          }}
+        >
+          Inspired by the Divine.
+          <br />
+          Created for You.
+        </h1>
+        <p style={{ fontSize: 18, lineHeight: 1.75, color: "#6E6F62", maxWidth: 620, margin: "0 auto" }}>
+          Isa means God &mdash; and that essence flows through everything we do. We are India&rsquo;s most luxurious day
+          spa chain, devoted to a world-class spa &amp; skincare experience that feels nothing short of heavenly.
+        </p>
+      </section>
 
-      <Section className="pt-0">
-        <div className="grid gap-12 md:grid-cols-2 md:items-center">
+      {/* ===== A SACRED SPACE (split) ===== */}
+      <section
+        style={{
+          maxWidth: 1240,
+          margin: "0 auto",
+          padding: "80px 40px",
+          display: "grid",
+          gridTemplateColumns: "1.05fr 0.95fr",
+          gap: 60,
+          alignItems: "center",
+        }}
+        className="isa-grid-split"
+      >
+        <div>
+          <div style={{ fontSize: 12, letterSpacing: "0.28em", textTransform: "uppercase", color: "#A8823A", marginBottom: 16 }}>
+            The Meaning Behind Isa
+          </div>
+          <h2
+            style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontWeight: 500,
+              fontSize: 44,
+              lineHeight: 1.12,
+              color: "#3F3B30",
+              margin: "0 0 22px",
+            }}
+          >
+            A sacred space for the everyday
+          </h2>
+          <p style={{ fontSize: 17, lineHeight: 1.8, margin: "0 0 18px" }}>
+            Our therapies are mindful rituals that help you reconnect with your inner divinity, reminding you that
+            self-love is the most sacred act. Each session is a celebration of your unique energy, treated with reverence
+            and grace.
+          </p>
+          <p style={{ fontSize: 17, lineHeight: 1.8, margin: 0 }}>
+            With highly trained professionals and bespoke therapies, every visit becomes an unforgettable journey toward
+            complete well-being &mdash; calmness, serenity and soul-invigorating aromas, delivered close to home.
+          </p>
+        </div>
+        <Photo
+          label="photo · tranquil spa interior"
+          style={{ height: 440, borderRadius: 18, boxShadow: "0 24px 56px rgba(80,60,30,0.14)" }}
+        />
+      </section>
+
+      {/* ===== VISION / MISSION (espresso) ===== */}
+      <section style={{ background: "linear-gradient(180deg, #2C2219 0%, #221A12 100%)" }}>
+        <div
+          style={{
+            maxWidth: 1100,
+            margin: "0 auto",
+            padding: "78px 40px",
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: 50,
+          }}
+          className="isa-grid-split"
+        >
           <div>
-            <h2 className="font-serif text-3xl text-ink">Inspired by the Divine. Created for you.</h2>
-            <div className="mt-5 space-y-4 text-ink-soft">
-              <p>
-                The name <strong className="text-ink">Isa</strong> means God — and that reverence shapes everything we
-                do. We believe rest is not indulgence but devotion: a way to return to yourself.
-              </p>
-              <p>
-                What began as a single sanctuary has grown into 50+ outlets across India, each one a calm, beautiful
-                space where world-class therapies are delivered by deeply trained therapists — and made an affordable
-                luxury, close to home.
-              </p>
-              <p>
-                Every ritual is bespoke. We never believe in one-size-fits-all wellness; we listen to your body and
-                tailor the experience to the energy you carry that day.
-              </p>
+            <div style={{ fontSize: 12, letterSpacing: "0.2em", textTransform: "uppercase", color: "#D9B25E", marginBottom: 14 }}>
+              Our Vision
             </div>
-          </div>
-          <Card className="bg-espresso/95 text-cream">
-            <p className="font-serif text-2xl leading-relaxed">
-              &ldquo;Pause. Breathe. Reconnect. A sacred space for the everyday — where healing feels divine.&rdquo;
+            <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, lineHeight: 1.4, color: "#F4ECDB", margin: 0 }}>
+              To stay on top as a premium spa brand &mdash; reckoned with boutique ambience, luxurious service and fanatic
+              customer care.
             </p>
-          </Card>
-        </div>
-      </Section>
-
-      <Section className="pt-0" bare>
-        <div className="bg-white/30 py-16 md:py-24">
-          <div className="mx-auto max-w-7xl px-6">
-            <SectionHeading eyebrow="What we stand for" title="The values that guide every ritual." center />
-            <div className="mt-12 grid gap-6 md:grid-cols-3">
-              {aboutValues.map((v) => (
-                <Card key={v.title}>
-                  <h3 className="font-serif text-2xl text-gold-deep">{v.title}</h3>
-                  <p className="mt-3 text-ink-soft">{v.desc}</p>
-                </Card>
-              ))}
+          </div>
+          <div>
+            <div style={{ fontSize: 12, letterSpacing: "0.2em", textTransform: "uppercase", color: "#D9B25E", marginBottom: 14 }}>
+              Our Mission
             </div>
+            <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, lineHeight: 1.4, color: "#F4ECDB", margin: 0 }}>
+              To make a world-class spa experience an affordable luxury, delivered at the convenience of every
+              customer&rsquo;s neighbourhood.
+            </p>
           </div>
         </div>
-      </Section>
+      </section>
 
-      <Section className="pt-0">
-        <SectionHeading eyebrow="Our presence" title="A sanctuary near you, across India." />
-        <div className="mt-8 flex flex-wrap gap-3">
-          {aboutPresence.map((city) => (
-            <span key={city} className="rounded-full border border-sand/60 bg-white/40 px-5 py-2 text-sm text-ink">
-              {city}
-            </span>
+      {/* ===== VALUES ===== */}
+      <section style={{ maxWidth: 1240, margin: "0 auto", padding: "84px 40px 40px" }}>
+        <div style={{ textAlign: "center", marginBottom: 44 }}>
+          <div style={{ fontSize: 12, letterSpacing: "0.28em", textTransform: "uppercase", color: "#A8823A", marginBottom: 12 }}>
+            What We Stand For
+          </div>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 500, fontSize: 44, color: "#3F3B30", margin: 0 }}>
+            Our values
+          </h2>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 22 }} className="isa-grid-3">
+          {aboutValues.map((v) => (
+            <div
+              key={v.title}
+              style={{ background: "#fff", border: "1px solid #ECE2CF", borderRadius: 16, padding: "34px 30px", textAlign: "center" }}
+            >
+              <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 30, color: "#B0863A", marginBottom: 10 }}>&#10047;</div>
+              <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 600, fontSize: 25, color: "#3F3B30", margin: "0 0 10px" }}>
+                {v.title}
+              </h3>
+              <p style={{ fontSize: 14.5, lineHeight: 1.65, margin: 0, color: "#8A8478" }}>{v.desc}</p>
+            </div>
           ))}
         </div>
-        <div className="mt-12 flex flex-wrap gap-4">
-          <ButtonLink href="/spa-locator">Find your nearest spa</ButtonLink>
-          <ButtonLink href="/appointment" variant="outline">
-            Book an appointment
-          </ButtonLink>
+      </section>
+
+      {/* ===== PRESENCE ===== */}
+      <section style={{ maxWidth: 1240, margin: "0 auto", padding: "50px 40px 40px" }}>
+        <div
+          style={{
+            background: "#FBF7EF",
+            border: "1px solid #ECE2CF",
+            borderRadius: 22,
+            padding: "48px 44px",
+            display: "grid",
+            gridTemplateColumns: "0.8fr 1.2fr",
+            gap: 44,
+            alignItems: "center",
+          }}
+          className="isa-grid-split"
+        >
+          <div>
+            <div style={{ fontSize: 12, letterSpacing: "0.28em", textTransform: "uppercase", color: "#A8823A", marginBottom: 14 }}>
+              Our Presence
+            </div>
+            <h2
+              style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontWeight: 500,
+                fontSize: 38,
+                lineHeight: 1.12,
+                color: "#3F3B30",
+                margin: "0 0 14px",
+              }}
+            >
+              50+ spas across India&rsquo;s most vibrant cities
+            </h2>
+            <p style={{ fontSize: 15, lineHeight: 1.7, color: "#8A8478", margin: 0 }}>
+              And growing every month. Wherever life takes you, an Isa Spa sanctuary is never far.
+            </p>
+          </div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 10, alignContent: "center" }}>
+            {aboutPresence.map((city) => (
+              <span
+                key={city}
+                style={{
+                  fontSize: 15,
+                  color: "#56564A",
+                  background: "#fff",
+                  border: "1px solid #E0D2B6",
+                  padding: "11px 20px",
+                  borderRadius: 999,
+                  fontFamily: "'Cormorant Garamond', serif",
+                  fontWeight: 600,
+                }}
+              >
+                {city}
+              </span>
+            ))}
+          </div>
         </div>
-      </Section>
-    </>
+      </section>
+
+      {/* ===== IMPEL VENTURES ===== */}
+      <section style={{ maxWidth: 1100, margin: "0 auto", padding: "60px 40px 90px" }}>
+        <div
+          style={{ border: "1px solid #ECE2CF", borderRadius: 22, padding: "46px 44px", textAlign: "center", background: "#fff" }}
+        >
+          <div style={{ fontSize: 12, letterSpacing: "0.22em", textTransform: "uppercase", color: "#B0863A", marginBottom: 14 }}>
+            An Impel Ventures Brand
+          </div>
+          <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 26, lineHeight: 1.5, color: "#4A4738", margin: "0 auto", maxWidth: 760 }}>
+            Isa Spa is an initiative of the Impel Ventures Group &mdash; a pioneer in Indian franchising behind Studio11
+            Salon &amp; Spa, Impel Overseas, DentalOne and GaadiSaaf.
+          </p>
+        </div>
+      </section>
+    </main>
   );
 }

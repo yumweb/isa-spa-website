@@ -1,34 +1,81 @@
+"use client";
+
 import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 const NAV = [
-  { href: "/about-us", label: "About" },
+  { href: "/", label: "Home" },
   { href: "/services", label: "Services" },
-  { href: "/isa-spa-membership", label: "Membership" },
   { href: "/spa-locator", label: "Spa Locator" },
+  { href: "/about-us", label: "About" },
   { href: "/franchise", label: "Franchise" },
-  { href: "/hotel-partnership", label: "Hotel Partnership" },
+  { href: "/hotel-partnership", label: "Hotels" },
 ];
 
 export function Header() {
+  const pathname = usePathname();
+  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
+
   return (
-    <header className="sticky top-0 z-50 border-b border-sand/40 bg-cream/90 backdrop-blur">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <Link href="/" className="font-serif text-2xl tracking-wide text-ink">
-          isa <span className="text-gold">spa</span>
+    <header
+      style={{
+        position: "sticky",
+        top: 0,
+        zIndex: 50,
+        background: "rgba(247,241,230,0.86)",
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)",
+        borderBottom: "1px solid #E7DCC8",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: 1280,
+          margin: "0 auto",
+          padding: "14px 40px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 24,
+        }}
+      >
+        <Link href="/" style={{ display: "flex", alignItems: "center", gap: 10 }} aria-label="Isa Spa — home">
+          <Image src="/isa-logo.png" alt="Isa Spa" width={120} height={52} priority style={{ height: 52, width: "auto" }} />
         </Link>
-        <nav className="hidden items-center gap-7 md:flex">
+        <nav style={{ display: "flex", alignItems: "center", gap: 4 }}>
           {NAV.map((n) => (
-            <Link key={n.href} href={n.href} className="text-sm text-ink-soft hover:text-gold">
+            <Link
+              key={n.href}
+              href={n.href}
+              style={{
+                fontSize: 13,
+                letterSpacing: "0.06em",
+                textTransform: "uppercase",
+                color: "#56564A",
+                padding: "8px 14px",
+                borderBottom: `2px solid ${isActive(n.href) ? "#C19A4B" : "transparent"}`,
+              }}
+            >
               {n.label}
             </Link>
           ))}
+          <Link
+            href="/appointment"
+            style={{
+              marginLeft: 12,
+              fontSize: 13,
+              letterSpacing: "0.04em",
+              color: "#fff",
+              background: "#C19A4B",
+              padding: "11px 22px",
+              borderRadius: 999,
+              boxShadow: "0 6px 18px rgba(193,154,75,0.28)",
+            }}
+          >
+            Book Appointment
+          </Link>
         </nav>
-        <Link
-          href="/appointment"
-          className="rounded-full bg-gold px-5 py-2 text-sm font-medium text-white hover:bg-gold-deep"
-        >
-          Book an Appointment
-        </Link>
       </div>
     </header>
   );

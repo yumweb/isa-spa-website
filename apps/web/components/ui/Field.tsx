@@ -1,7 +1,9 @@
 import type { ReactNode } from "react";
 
+// Matches the approved prototype inputs: white field, warm #E0D2B6 border,
+// 10px radius, 13/15 padding, olive-taupe text.
 const inputBase =
-  "mt-1.5 w-full rounded-xl border border-sand/60 bg-white/60 px-4 py-3 text-ink placeholder:text-mute/70 outline-none focus:border-gold focus:ring-2 focus:ring-gold/30";
+  "mt-1.5 w-full rounded-[10px] border border-[#E0D2B6] bg-white px-[15px] py-[13px] text-[14px] text-[#56564A] placeholder:text-[#A39C8C] outline-none focus:border-gold focus:ring-2 focus:ring-gold/25";
 
 /** Labelled field wrapper with accessible error messaging. */
 export function Field({

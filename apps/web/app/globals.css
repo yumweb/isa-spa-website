@@ -2,54 +2,142 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── ISA Spa design system (from approved Editorial prototype) ── */
 :root {
   color-scheme: light;
 }
 
+* {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+}
 body {
-  @apply bg-cream text-ink font-sans antialiased;
+  margin: 0;
+  background: #f7f1e6;
+  font-family: "Mulish", system-ui, sans-serif;
+  color: #6e6f62;
+  -webkit-font-smoothing: antialiased;
+}
+::selection {
+  background: #c19a4b;
+  color: #fff;
 }
 
 h1,
 h2,
 h3 {
-  @apply font-serif;
+  font-family: "Cormorant Garamond", Georgia, serif;
 }
 
-/*
- * Rich-text / CMS HTML container (blog bodies, job descriptions, legal copy).
- * Self-contained so we don't depend on the Tailwind typography plugin.
- */
+@keyframes isaFade {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes isaFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* Warm striped placeholder used wherever real photography will go. */
+.isa-photo {
+  background: repeating-linear-gradient(135deg, #ebe0cb, #ebe0cb 14px, #e4d7bd 14px, #e4d7bd 28px);
+}
+.isa-photo-label {
+  font-family: ui-monospace, monospace;
+  font-size: 12px;
+  color: #9a8e72;
+  background: rgba(255, 255, 255, 0.72);
+  padding: 6px 12px;
+  border-radius: 6px;
+}
+
+/* Rich-text / CMS HTML (blog bodies, job descriptions, legal copy). */
 .richtext {
-  @apply text-ink-soft leading-relaxed;
+  color: #6e6f62;
+  line-height: 1.8;
 }
 .richtext > * + * {
-  @apply mt-4;
+  margin-top: 1rem;
 }
 .richtext h2 {
-  @apply mt-10 font-serif text-2xl text-ink;
+  margin-top: 2.5rem;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.9rem;
+  color: #3f3b30;
 }
 .richtext h3 {
-  @apply mt-8 font-serif text-xl text-ink;
-}
-.richtext p {
-  @apply text-ink-soft;
+  margin-top: 2rem;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.5rem;
+  color: #3f3b30;
 }
 .richtext a {
-  @apply text-gold-deep underline underline-offset-2 hover:text-gold;
+  color: #a8823a;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 .richtext ul {
-  @apply list-disc space-y-1 pl-6;
+  list-style: disc;
+  padding-left: 1.5rem;
 }
 .richtext ol {
-  @apply list-decimal space-y-1 pl-6;
-}
-.richtext strong {
-  @apply text-ink;
-}
-.richtext img {
-  @apply rounded-2xl;
+  list-style: decimal;
+  padding-left: 1.5rem;
 }
 .richtext blockquote {
-  @apply border-l-2 border-gold/50 pl-4 italic text-ink;
+  border-left: 2px solid rgba(193, 154, 75, 0.5);
+  padding-left: 1rem;
+  font-style: italic;
+  color: #4a4738;
+}
+.richtext img {
+  border-radius: 1rem;
+}
+
+/* ── Responsive: collapse the prototype's desktop grids on tablet/mobile ── */
+@media (max-width: 980px) {
+  .isa-hero,
+  .isa-grid-split {
+    grid-template-columns: 1fr !important;
+  }
+  .isa-grid-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .isa-footer-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+@media (max-width: 720px) {
+  .isa-grid-3,
+  .isa-grid-4,
+  .isa-footer-grid {
+    grid-template-columns: 1fr !important;
+  }
+  /* tighten section padding on small screens */
+  .isa-hero,
+  .isa-grid-split {
+    padding-left: 22px !important;
+    padding-right: 22px !important;
+  }
+  header > div,
+  footer > div {
+    padding-left: 22px !important;
+    padding-right: 22px !important;
+  }
+  nav {
+    display: none !important;
+  }
 }

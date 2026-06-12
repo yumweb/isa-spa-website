@@ -1,10 +1,8 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { Container } from "@/components/ui/Container";
-import { Card } from "@/components/ui/Card";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { LeadForm, type LeadField } from "@/components/LeadForm";
-import { careerSchema, type CareerInput } from "@isa/shared";
+import { type CareerInput } from "@isa/shared";
 import { getCareers, getCareer } from "@/lib/api";
 import { pageMeta, breadcrumbJsonLd, jsonLdScript } from "@/lib/seo";
 
@@ -44,38 +42,45 @@ export default async function CareerDetailPage({ params }: { params: Promise<{ s
     { name: "Careers", path: "/careers" },
     { name: job.title, path: `/careers/${job.slug}` },
   ];
+  const meta = [job.location, job.type].filter(Boolean).join(" · ");
 
   return (
-    <Container className="py-12 md:py-16">
-      <Breadcrumbs crumbs={crumbs} />
-      <div className="mt-8 grid gap-12 lg:grid-cols-[1.4fr_1fr] lg:items-start">
+    <>
+      {/* ===== HEADER BAND ===== */}
+      <section style={{ background: "radial-gradient(120% 100% at 50% 0%, #FBF6EC 0%, #F1E7D2 100%)", padding: "40px 40px 56px" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <Breadcrumbs crumbs={crumbs} />
+          <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 500, fontSize: 52, lineHeight: 1.13, color: "#3F3B30", margin: "20px 0 10px" }}>
+            {job.title}
+          </h1>
+          {meta && <p style={{ fontSize: 13, letterSpacing: "0.1em", textTransform: "uppercase", color: "#9A9486", margin: 0 }}>{meta}</p>}
+        </div>
+      </section>
+
+      <section
+        style={{ maxWidth: 1100, margin: "0 auto", padding: "56px 40px 90px", display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: 48, alignItems: "start" }}
+        className="isa-grid-split"
+      >
         <article>
-          <h1 className="font-serif text-4xl text-ink md:text-5xl">{job.title}</h1>
-          <p className="mt-3 text-mute">{[job.location, job.type].filter(Boolean).join(" · ")}</p>
-          <div
-            className="richtext mt-8"
-            dangerouslySetInnerHTML={{ __html: job.description }}
-          />
+          <div className="richtext" dangerouslySetInnerHTML={{ __html: job.description }} />
         </article>
 
-        <Card className="lg:sticky lg:top-24">
-          <h2 className="font-serif text-2xl text-ink">Apply for this role</h2>
-          <p className="mt-2 text-sm text-ink-soft">We'll get back to you about next steps.</p>
-          <div className="mt-6">
-            <LeadForm
-              type="CAREER"
-              fields={fields}
-              sourcePage={`/careers/${job.slug}`}
-              defaults={{ role: job.title } as Partial<CareerInput>}
-              submitLabel="Submit application"
-              successTitle="Application received."
-              successMessage="Thank you — our people team will be in touch about this role."
-            />
-          </div>
-        </Card>
-      </div>
+        <div style={{ background: "#fff", border: "1px solid #ECE2CF", borderRadius: 18, padding: 32, position: "sticky", top: 96 }}>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 600, fontSize: 26, color: "#3F3B30", margin: "0 0 6px" }}>Apply for this role</h2>
+          <p style={{ fontSize: 14, lineHeight: 1.6, color: "#8A8478", margin: "0 0 22px" }}>We&rsquo;ll get back to you about next steps.</p>
+          <LeadForm
+            type="CAREER"
+            fields={fields}
+            sourcePage={`/careers/${job.slug}`}
+            defaults={{ role: job.title } as Partial<CareerInput>}
+            submitLabel="Submit application"
+            successTitle="Application received."
+            successMessage="Thank you — our people team will be in touch about this role."
+          />
+        </div>
+      </section>
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(breadcrumbJsonLd(crumbs)) }} />
-    </Container>
+    </>
   );
 }

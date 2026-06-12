@@ -1,32 +1,47 @@
 import type { ReactNode } from "react";
-import { Container } from "@/components/ui/Container";
 
 /**
- * Shared shell for legal pages. The body copy is placeholder pending the
- * client's finalised legal text (see the notice each page renders).
+ * Shared shell for legal pages: approved radial hero with the page title, a
+ * clearly-flagged placeholder notice, and the copy rendered via `.richtext`.
+ * Body copy is placeholder pending the client's finalised legal text.
  */
 export function LegalPage({
   title,
   updated,
   children,
 }: {
-  title: string;
+  title: ReactNode;
   updated?: string;
   children: ReactNode;
 }) {
   return (
-    <Container className="py-16 md:py-24">
-      <div className="mx-auto max-w-3xl">
-        <h1 className="font-serif text-4xl text-ink md:text-5xl">{title}</h1>
-        {updated && <p className="mt-2 text-sm text-mute">Last updated: {updated}</p>}
+    <>
+      <section style={{ background: "radial-gradient(120% 100% at 50% 0%, #FBF6EC 0%, #F1E7D2 100%)", padding: "64px 40px 56px", textAlign: "center" }}>
+        <div style={{ maxWidth: 760, margin: "0 auto" }}>
+          <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 500, fontSize: 56, lineHeight: 1.13, color: "#3F3B30", margin: 0 }}>{title}</h1>
+          {updated && <p style={{ fontSize: 13, color: "#9A9486", marginTop: 12 }}>Last updated: {updated}</p>}
+        </div>
+      </section>
 
-        <div className="mt-6 rounded-xl border border-gold/30 bg-gold/5 p-4 text-sm text-ink-soft">
-          <strong className="text-ink">Note:</strong> This is placeholder copy. Final legal wording is to be provided
-          by ISA Spa before launch.
+      <section style={{ maxWidth: 760, margin: "0 auto", padding: "48px 40px 90px" }}>
+        <div
+          style={{
+            background: "#FBF7EF",
+            border: "1px solid #EFE6D3",
+            borderRadius: 14,
+            padding: "16px 20px",
+            fontSize: 14,
+            lineHeight: 1.6,
+            color: "#6E6F62",
+            marginBottom: 36,
+          }}
+        >
+          <strong style={{ color: "#3F3B30" }}>Placeholder — final copy TBD by client.</strong> The wording below is a
+          working draft; ISA Spa will provide the finalised legal text before launch.
         </div>
 
-        <div className="richtext mt-10">{children}</div>
-      </div>
-    </Container>
+        <div className="richtext">{children}</div>
+      </section>
+    </>
   );
 }

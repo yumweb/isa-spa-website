@@ -1,11 +1,10 @@
 import Link from "next/link";
-import { PageHero } from "@/components/ui/PageHero";
-import { Section, SectionHeading } from "@/components/ui/Section";
-import { Card } from "@/components/ui/Card";
 import { LeadForm, type LeadField } from "@/components/LeadForm";
-import { careerSchema, type CareerInput } from "@isa/shared";
+import { type CareerInput } from "@isa/shared";
 import { getCareers } from "@/lib/api";
 import { pageMeta } from "@/lib/seo";
+import { Hero } from "@/components/Hero";
+import { Eyebrow } from "@/components/site/primitives";
 
 export const metadata = pageMeta({
   title: "Careers at ISA Spa — Join Our Team",
@@ -38,65 +37,71 @@ export default async function CareersPage() {
 
   return (
     <>
-      <PageHero
+      <Hero
         eyebrow="Careers"
         title="Do work that restores people."
         lead="Join a team that treats wellness as a calling. We're always looking for warm, skilled people to grow with ISA Spa."
       />
 
-      <Section className="pt-0">
-        <SectionHeading eyebrow="Open roles" title="Current openings" />
-        <div className="mt-8">
-          {openings.length === 0 ? (
-            <Card>
-              <p className="text-ink-soft">
-                We don't have any specific openings listed right now — but we're always glad to meet great people. Send
-                a general application below and we'll reach out when a fitting role opens.
-              </p>
-            </Card>
-          ) : (
-            <ul className="grid gap-5 md:grid-cols-2">
-              {openings.map((job) => (
-                <li key={job.id}>
-                  <Link
-                    href={`/careers/${job.slug}`}
-                    className="block rounded-2xl border border-sand/50 bg-white/40 p-6 transition hover:border-gold"
-                  >
-                    <h3 className="font-serif text-2xl text-ink">{job.title}</h3>
-                    <p className="mt-2 text-sm text-mute">
-                      {[job.location, job.type].filter(Boolean).join(" · ")}
-                    </p>
-                    <span className="mt-4 inline-block text-sm font-medium text-gold-deep">View role →</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          )}
+      {/* ===== OPEN ROLES ===== */}
+      <section style={{ maxWidth: 1280, margin: "0 auto", padding: "72px 40px 40px" }}>
+        <div style={{ marginBottom: 36 }}>
+          <Eyebrow>Open roles</Eyebrow>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 500, fontSize: 42, color: "#3F3B30", margin: 0 }}>Current openings</h2>
         </div>
-      </Section>
 
-      <Section className="pt-0" bare>
-        <div className="bg-white/30 py-16 md:py-24">
-          <div className="mx-auto max-w-3xl px-6">
-            <SectionHeading
-              eyebrow="Apply"
-              title="Send us your application."
-              lead="Share your details and our people team will be in touch about suitable roles."
-              center
+        {openings.length === 0 ? (
+          <div style={{ background: "#fff", border: "1px solid #ECE2CF", borderRadius: 18, padding: "40px 36px" }}>
+            <p style={{ fontSize: 16, lineHeight: 1.7, color: "#6E6F62", margin: 0 }}>
+              We don&rsquo;t have any specific openings listed right now &mdash; but we&rsquo;re always glad to meet great people.
+              Send a general application below and we&rsquo;ll reach out when a fitting role opens.
+            </p>
+          </div>
+        ) : (
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 20 }} className="isa-grid-3">
+            {openings.map((job) => (
+              <Link
+                key={job.id}
+                href={`/careers/${job.slug}`}
+                style={{ background: "#fff", border: "1px solid #ECE2CF", borderRadius: 18, padding: "30px 28px", display: "block" }}
+              >
+                <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 600, fontSize: 26, color: "#3F3B30", margin: "0 0 8px" }}>{job.title}</h3>
+                {[job.location, job.type].filter(Boolean).length > 0 && (
+                  <p style={{ fontSize: 13, letterSpacing: "0.06em", textTransform: "uppercase", color: "#9A9486", margin: "0 0 16px" }}>
+                    {[job.location, job.type].filter(Boolean).join(" · ")}
+                  </p>
+                )}
+                <span style={{ fontSize: 14, color: "#B0863A", fontWeight: 600 }}>View role &rarr;</span>
+              </Link>
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* ===== APPLICATION FORM ===== */}
+      <section style={{ background: "#FBF7EF", borderTop: "1px solid #EFE6D3", marginTop: 40 }}>
+        <div style={{ maxWidth: 760, margin: "0 auto", padding: "84px 40px" }}>
+          <div style={{ textAlign: "center", marginBottom: 36 }}>
+            <Eyebrow>Apply</Eyebrow>
+            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 500, fontSize: 42, color: "#3F3B30", margin: "0 0 14px" }}>
+              Send us your application
+            </h2>
+            <p style={{ fontSize: 16, lineHeight: 1.7, color: "#6E6F62", maxWidth: 480, margin: "0 auto" }}>
+              Share your details and our people team will be in touch about suitable roles.
+            </p>
+          </div>
+          <div style={{ background: "#fff", border: "1px solid #ECE2CF", borderRadius: 18, padding: 36 }}>
+            <LeadForm
+              type="CAREER"
+              fields={fields}
+              sourcePage="/careers"
+              submitLabel="Submit application"
+              successTitle="Application received."
+              successMessage="Thank you for your interest in ISA Spa — our people team will be in touch."
             />
-            <div className="mt-10">
-              <LeadForm
-                type="CAREER"
-                fields={fields}
-                sourcePage="/careers"
-                submitLabel="Submit application"
-                successTitle="Application received."
-                successMessage="Thank you for your interest in ISA Spa — our people team will be in touch."
-              />
-            </div>
           </div>
         </div>
-      </Section>
+      </section>
     </>
   );
 }

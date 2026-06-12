@@ -1,8 +1,5 @@
-import { PageHero } from "@/components/ui/PageHero";
-import { Section, SectionHeading } from "@/components/ui/Section";
-import { Card } from "@/components/ui/Card";
 import { LeadForm, type LeadField } from "@/components/LeadForm";
-import { hotelSchema, type HotelInput } from "@isa/shared";
+import type { HotelInput } from "@isa/shared";
 import { pageMeta, faqJsonLd, jsonLdScript } from "@/lib/seo";
 import { hotelModels, hotelBenefits } from "@/lib/marketing";
 
@@ -14,8 +11,8 @@ export const metadata = pageMeta({
 });
 
 const fields: LeadField<HotelInput>[] = [
-  { name: "name", label: "Your name", required: true, placeholder: "Contact person" },
-  { name: "hotelName", label: "Hotel / group name", required: true, placeholder: "Property or group" },
+  { name: "name", label: "Your name", required: true, placeholder: "Contact person", full: true },
+  { name: "hotelName", label: "Hotel / group name", required: true, placeholder: "Property or group", full: true },
   { name: "city", label: "City", required: true, placeholder: "Property location" },
   { name: "rooms", label: "Number of rooms", type: "number", placeholder: "e.g. 120" },
   { name: "email", label: "Work email", type: "email", required: true, placeholder: "you@hotel.com", full: true },
@@ -34,76 +31,176 @@ const faqs = [
 
 export default function HotelPartnershipPage() {
   return (
-    <>
-      <PageHero
-        eyebrow="Hotel Partnership"
-        title="A turnkey luxury spa for your property."
-        lead="Elevate guest experience and unlock a new revenue stream — with India's most loved day spa brand running on your floor, your way."
-      />
-
-      <Section className="pt-0">
-        <SectionHeading eyebrow="Partnership models" title="Three ways to bring ISA in." center />
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {hotelModels.map((m) => (
-            <Card key={m.tag}>
-              <span className="inline-block rounded-full bg-gold/15 px-3 py-1 text-xs font-medium uppercase tracking-wide text-gold-deep">
-                {m.tag}
-              </span>
-              <h3 className="mt-4 font-serif text-2xl text-ink">{m.title}</h3>
-              <p className="mt-2 text-sm text-ink-soft">{m.desc}</p>
-              <p className="mt-4 text-xs uppercase tracking-wide text-mute">{m.best}</p>
-            </Card>
-          ))}
-        </div>
-      </Section>
-
-      <Section className="pt-0" bare>
-        <div className="bg-white/30 py-16 md:py-24">
-          <div className="mx-auto max-w-7xl px-6">
-            <SectionHeading eyebrow="Why partner" title="Value for your property and your guests." center />
-            <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-              {hotelBenefits.map((b) => (
-                <Card key={b.title} className="p-6">
-                  <h3 className="font-serif text-xl text-ink">{b.title}</h3>
-                  <p className="mt-2 text-sm text-ink-soft">{b.desc}</p>
-                </Card>
-              ))}
+    <main>
+      {/* ===== HERO (striped + ivory overlay) ===== */}
+      <section
+        style={{
+          position: "relative",
+          padding: "78px 40px",
+          background: "repeating-linear-gradient(135deg, #EBE0CB, #EBE0CB 16px, #E4D7BD 16px, #E4D7BD 32px)",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "linear-gradient(90deg, rgba(247,241,230,0.96) 0%, rgba(247,241,230,0.86) 50%, rgba(247,241,230,0.6) 100%)",
+          }}
+        />
+        <div style={{ position: "relative", maxWidth: 1240, margin: "0 auto" }}>
+          <div style={{ maxWidth: 620 }}>
+            <div style={{ fontSize: 12, letterSpacing: "0.3em", textTransform: "uppercase", color: "#A8823A", marginBottom: 20 }}>
+              Hotel Partnerships
+            </div>
+            <h1
+              style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontWeight: 500,
+                fontSize: 58,
+                lineHeight: 1.13,
+                color: "#3F3B30",
+                margin: "0 0 22px",
+              }}
+            >
+              A turnkey luxury spa for your property
+            </h1>
+            <p style={{ fontSize: 18, lineHeight: 1.7, color: "#6E6F62", maxWidth: 500, margin: "0 0 32px" }}>
+              Elevate your guest experience and unlock a new revenue stream. Isa Spa designs, staffs and operates a
+              world-class spa inside your hotel &mdash; end to end.
+            </p>
+            <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
+              <a
+                href="#start"
+                style={{ fontSize: 15, color: "#fff", background: "#2A211A", padding: "15px 30px", borderRadius: 999 }}
+              >
+                Discuss a collaboration
+              </a>
+              <a
+                href="#models"
+                style={{ fontSize: 15, color: "#56564A", border: "1px solid #C8B58C", padding: "15px 30px", borderRadius: 999 }}
+              >
+                See partnership models
+              </a>
             </div>
           </div>
         </div>
-      </Section>
+      </section>
 
-      <Section className="pt-0">
-        <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
+      {/* ===== MODELS ===== */}
+      <section id="models" style={{ maxWidth: 1240, margin: "0 auto", padding: "84px 40px 50px" }}>
+        <div style={{ textAlign: "center", marginBottom: 46 }}>
+          <div style={{ fontSize: 12, letterSpacing: "0.28em", textTransform: "uppercase", color: "#A8823A", marginBottom: 12 }}>
+            Flexible Models
+          </div>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 500, fontSize: 44, color: "#3F3B30", margin: 0 }}>
+            Three ways we can work together
+          </h2>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 22 }} className="isa-grid-3">
+          {hotelModels.map((m) => (
+            <div key={m.tag} style={{ background: "#fff", border: "1px solid #ECE2CF", borderRadius: 18, padding: "34px 30px" }}>
+              <div style={{ fontSize: 11, letterSpacing: "0.16em", textTransform: "uppercase", color: "#B0863A", marginBottom: 14 }}>
+                {m.tag}
+              </div>
+              <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 600, fontSize: 26, color: "#3F3B30", margin: "0 0 12px" }}>
+                {m.title}
+              </h3>
+              <p style={{ fontSize: 14.5, lineHeight: 1.65, margin: "0 0 18px", color: "#8A8478" }}>{m.desc}</p>
+              <div style={{ fontSize: 13, color: "#6E6F62", borderTop: "1px solid #F0E8D7", paddingTop: 14 }}>{m.best}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ===== WHAT YOU GAIN + form ===== */}
+      <section style={{ background: "#FBF7EF", borderTop: "1px solid #EFE6D3" }}>
+        <div
+          id="start"
+          style={{
+            maxWidth: 1240,
+            margin: "0 auto",
+            padding: "80px 40px",
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: 56,
+            alignItems: "center",
+          }}
+          className="isa-grid-split"
+        >
           <div>
-            <SectionHeading eyebrow="Enquire" title="Let's design your spa." />
-            <p className="mt-4 text-ink-soft">
-              Tell us about your property and our partnerships team will propose the right model and a tailored
-              projection.
-            </p>
-            <dl className="mt-8 space-y-6">
-              {faqs.map((f) => (
-                <div key={f.q}>
-                  <dt className="font-serif text-lg text-ink">{f.q}</dt>
-                  <dd className="mt-1 text-sm text-ink-soft">{f.a}</dd>
+            <div style={{ fontSize: 12, letterSpacing: "0.28em", textTransform: "uppercase", color: "#A8823A", marginBottom: 14 }}>
+              What You Gain
+            </div>
+            <h2
+              style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontWeight: 500,
+                fontSize: 42,
+                lineHeight: 1.12,
+                color: "#3F3B30",
+                margin: "0 0 26px",
+              }}
+            >
+              A signature amenity, none of the operational burden
+            </h2>
+            <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+              {hotelBenefits.map((b) => (
+                <div key={b.title} style={{ display: "flex", gap: 16, alignItems: "start" }}>
+                  <span
+                    style={{
+                      flexShrink: 0,
+                      width: 30,
+                      height: 30,
+                      borderRadius: "50%",
+                      background: "#C19A4B",
+                      color: "#fff",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: 15,
+                    }}
+                  >
+                    &#10003;
+                  </span>
+                  <div>
+                    <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 21, fontWeight: 600, color: "#3F3B30", marginBottom: 2 }}>
+                      {b.title}
+                    </div>
+                    <p style={{ fontSize: 14.5, lineHeight: 1.6, margin: 0, color: "#8A8478" }}>{b.desc}</p>
+                  </div>
                 </div>
               ))}
-            </dl>
+            </div>
           </div>
-          <Card>
+          <div
+            style={{
+              background: "#fff",
+              border: "1px solid #ECE2CF",
+              borderRadius: 20,
+              padding: "34px 32px",
+              boxShadow: "0 24px 56px rgba(80,60,30,0.1)",
+            }}
+          >
+            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 26, color: "#3F3B30", marginBottom: 4 }}>
+              Start the conversation
+            </div>
+            <p style={{ fontSize: 13.5, color: "#8A8478", margin: "0 0 20px" }}>
+              Our partnerships team will reach out within two business days.
+            </p>
             <LeadForm
               type="HOTEL"
               fields={fields}
               sourcePage="/hotel-partnership"
-              submitLabel="Request a partnership proposal"
+              submitLabel="Request a proposal"
               successTitle="Thank you."
               successMessage="Our partnerships team will reach out with a tailored proposal soon."
             />
-          </Card>
+          </div>
         </div>
-      </Section>
+      </section>
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(faqJsonLd(faqs)) }} />
-    </>
+    </main>
   );
 }

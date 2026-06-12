@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Image from "next/image";
-import { Container } from "@/components/ui/Container";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { Photo } from "@/components/site/primitives";
 import { getBlogPosts, getBlogPost } from "@/lib/api";
 import { pageMeta, blogPostingJsonLd, breadcrumbJsonLd, jsonLdScript } from "@/lib/seo";
 
@@ -41,48 +41,38 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const date = fmtDate(post.publishedAt);
 
   return (
-    <Container className="py-12 md:py-16">
-      <Breadcrumbs crumbs={crumbs} />
-
-      <article className="mx-auto mt-8 max-w-3xl">
-        <header>
+    <>
+      {/* ===== ARTICLE HEADER ===== */}
+      <section style={{ background: "radial-gradient(120% 100% at 50% 0%, #FBF6EC 0%, #F1E7D2 100%)", padding: "40px 40px 56px" }}>
+        <div style={{ maxWidth: 820, margin: "0 auto" }}>
+          <Breadcrumbs crumbs={crumbs} />
           {post.tags && post.tags.length > 0 && (
-            <p className="text-sm uppercase tracking-[0.3em] text-gold-deep">{post.tags[0]}</p>
+            <div style={{ fontSize: 12, letterSpacing: "0.18em", textTransform: "uppercase", color: "#A8823A", margin: "20px 0 12px" }}>{post.tags[0]}</div>
           )}
-          <h1 className="mt-4 font-serif text-4xl leading-tight text-ink md:text-5xl">{post.title}</h1>
-          <p className="mt-4 text-sm text-mute">
+          <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 500, fontSize: 56, lineHeight: 1.13, color: "#3F3B30", margin: "0 0 14px" }}>
+            {post.title}
+          </h1>
+          <p style={{ fontSize: 13, letterSpacing: "0.08em", textTransform: "uppercase", color: "#9A9486", margin: 0 }}>
             {post.author ? `${post.author} · ` : ""}
             {date}
           </p>
-        </header>
+        </div>
+      </section>
 
-        {post.coverImage && (
-          <div className="relative mt-8 aspect-[16/9] w-full overflow-hidden rounded-2xl">
-            <Image
-              src={post.coverImage}
-              alt={post.title}
-              fill
-              priority
-              sizes="(max-width: 768px) 100vw, 768px"
-              className="object-cover"
-            />
+      <article style={{ maxWidth: 820, margin: "0 auto", padding: "48px 40px 90px" }}>
+        {post.coverImage ? (
+          <div style={{ position: "relative", aspectRatio: "16/9", width: "100%", overflow: "hidden", borderRadius: 18, marginBottom: 40, boxShadow: "0 24px 56px rgba(80,60,30,0.12)" }}>
+            <Image src={post.coverImage} alt={post.title} fill priority sizes="(max-width: 820px) 100vw, 820px" style={{ objectFit: "cover" }} />
           </div>
+        ) : (
+          <Photo label={post.title} style={{ aspectRatio: "16/9", borderRadius: 18, marginBottom: 40 }} />
         )}
 
-        <div
-          className="richtext mt-10"
-          dangerouslySetInnerHTML={{ __html: post.body }}
-        />
+        <div className="richtext" dangerouslySetInnerHTML={{ __html: post.body }} />
       </article>
 
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: jsonLdScript(blogPostingJsonLd(post)) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: jsonLdScript(breadcrumbJsonLd(crumbs)) }}
-      />
-    </Container>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(blogPostingJsonLd(post)) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(breadcrumbJsonLd(crumbs)) }} />
+    </>
   );
 }
