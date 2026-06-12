@@ -41,3 +41,28 @@ export type PublishStatus = (typeof PUBLISH_STATUSES)[number];
 
 export const ROLES = ["ADMIN", "EDITOR"] as const;
 export type Role = (typeof ROLES)[number];
+
+// ─── AI blog generator ───
+export const GENERATION_STATUSES = ["PENDING", "RUNNING", "COMPLETED", "FAILED"] as const;
+export type GenerationStatus = (typeof GENERATION_STATUSES)[number];
+
+export const GENERATION_TRIGGERS = ["MANUAL", "SCHEDULED"] as const;
+export type GenerationTrigger = (typeof GENERATION_TRIGGERS)[number];
+
+/**
+ * Default wellness content pillars the generator rotates through on scheduled
+ * runs (editable in the CMS Settings `aiBlog.pillars` key). Each is a broad
+ * theme; the researcher derives a specific, seasonal topic within it.
+ */
+export const CONTENT_PILLARS = [
+  "Signature massage therapies & their benefits",
+  "Facials, skincare & glowing complexion",
+  "Foot spa, reflexology & pedicure care",
+  "Body polishing, scrubs & detox rituals",
+  "Self-care rituals & mindful wellness",
+  "Ayurveda & traditional Indian wellness",
+  "Stress relief, sleep & mental calm",
+  "Spa etiquette & first-visit guides",
+  "Seasonal & festive wellness in India",
+  "Couples, gifting & special-occasion spa experiences",
+] as const;

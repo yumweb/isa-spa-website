@@ -24,6 +24,7 @@ import {
   mediaAdminRouter,
   settingsAdminRouter,
 } from "./routes/admin/index.js";
+import { aiBlogAdminRouter } from "./routes/admin/ai-blog.js";
 
 export function createApp() {
   const app = express();
@@ -65,6 +66,7 @@ export function createApp() {
   app.use("/api/admin/media", requireAuth, mediaAdminRouter);
   app.use("/api/admin/settings", requireAuth, settingsAdminRouter);
   app.use("/api/admin/users", requireAuth, usersAdminRouter); // router also enforces ADMIN
+  app.use("/api/admin/ai-blog", requireAuth, aiBlogAdminRouter);
 
   app.use(notFound);
   app.use(errorHandler);

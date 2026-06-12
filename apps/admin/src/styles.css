@@ -281,6 +281,23 @@ table.data tr:hover td {
   background: #ececec;
   color: #555;
 }
+/* AI-blog generation run statuses */
+.badge-COMPLETED {
+  background: #e3f1e4;
+  color: #2e7d32;
+}
+.badge-RUNNING {
+  background: #e4eefc;
+  color: #1f5fb0;
+}
+.badge-PENDING {
+  background: #fff4e0;
+  color: #9a6a14;
+}
+.badge-FAILED {
+  background: #fdecea;
+  color: #c0392b;
+}
 .badge-gold {
   background: #f3e9d4;
   color: var(--gold-deep);
@@ -469,6 +486,11 @@ fieldset legend {
   background: #fdecea;
   color: var(--danger);
   border: 1px solid #f5c6c0;
+}
+.alert-success {
+  background: #e3f1e4;
+  color: #2e7d32;
+  border: 1px solid #bcdfc0;
 }
 .spinner {
   padding: 30px;

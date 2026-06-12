@@ -129,6 +129,14 @@ export const userUpdateSchema = z.object({
   isActive: z.boolean().optional(),
 });
 
+/** Request body for the AI blog generator (all optional — falls back to a rotated pillar). */
+export const aiBlogGenerateSchema = z.object({
+  topic: z.string().trim().max(300).optional(),
+  keywords: z.array(z.string().trim().max(80)).max(12).optional(),
+  pillar: z.string().trim().max(200).optional(),
+});
+export type AiBlogGenerateInput = z.infer<typeof aiBlogGenerateSchema>;
+
 export type LocationInput = z.infer<typeof locationSchema>;
 export type ServiceCategoryInput = z.infer<typeof serviceCategorySchema>;
 export type ServiceInput = z.infer<typeof serviceSchema>;

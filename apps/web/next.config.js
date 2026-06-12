@@ -18,6 +18,13 @@ const nextConfig = {
     // Add the CMS media host(s) here once known (S3/R2 public URL).
     remotePatterns: [{ protocol: "https", hostname: "**" }],
   },
+  // CMS media (cover images, gallery) is stored as `/uploads/*` and served by
+  // the Express API. Proxy it through the web origin so <Image> resolves it.
+  // In production, point uploads at S3/R2 and drop this.
+  async rewrites() {
+    const api = process.env.API_INTERNAL_URL ?? "http://localhost:4000";
+    return [{ source: "/uploads/:path*", destination: `${api}/uploads/:path*` }];
+  },
   // Legacy isaspa.in URL preservation is driven by the CMS `redirects` table;
   // wire dynamic redirects via middleware or a generated list at build time.
   async redirects() {

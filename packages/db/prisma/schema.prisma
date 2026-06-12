@@ -275,3 +275,39 @@ model AuditLog {
   @@index([entity])
   @@map("audit_logs")
 }
+
+// ─── AI blog generation runs (observability for the AI generator) ───
+enum GenerationStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+enum GenerationTrigger {
+  MANUAL
+  SCHEDULED
+}
+
+model BlogGenerationRun {
+  id              Int               @id @default(autoincrement())
+  status          GenerationStatus  @default(PENDING)
+  trigger         GenerationTrigger @default(MANUAL)
+  currentStep     String?           @map("current_step")
+  pillar          String?
+  topic           String?           @db.Text
+  blogPostId      Int?              @map("blog_post_id") // set once a draft is created
+  seoScore        Int?              @map("seo_score")
+  qualityScore    Int?              @map("quality_score")
+  retryCount      Int               @default(0) @map("retry_count")
+  imageSource     String?           @map("image_source") // pexels | unsplash | none
+  generationMs    Int?              @map("generation_ms")
+  errorMessage    String?           @map("error_message") @db.Text
+  metadata        Json? // token usage, model usage, cost estimate, structured data
+  triggeredBy     Int?              @map("triggered_by")
+  createdAt       DateTime          @default(now()) @map("created_at")
+  updatedAt       DateTime          @updatedAt @map("updated_at")
+
+  @@index([status, createdAt])
+  @@map("blog_generation_runs")
+}

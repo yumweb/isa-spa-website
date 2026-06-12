@@ -10,6 +10,7 @@ import {
   serviceSchema,
   testimonialSchema,
 } from "@isa/shared";
+import { Link } from "react-router-dom";
 import { useList } from "../lib/entities";
 import { mediaUrl } from "../lib/api";
 import { ResourcePage } from "../components/ResourcePage";
@@ -146,6 +147,11 @@ export function BlogPage() {
       title="Blog Post"
       schema={blogPostSchema}
       fields={fields}
+      headerExtra={
+        <Link to="/ai-blog" className="btn">
+          ✨ Generate with AI
+        </Link>
+      }
       labelOf={(i: any) => i.title}
       columns={[
         { header: "Title", render: (i: any) => i.title },

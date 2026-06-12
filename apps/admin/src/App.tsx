@@ -6,6 +6,7 @@ import { LeadsPage } from "./pages/Leads";
 import { MediaPage } from "./pages/Media";
 import { SettingsPage } from "./pages/Settings";
 import { UsersPage } from "./pages/Users";
+import { AiBlogPage } from "./pages/AiBlog";
 import {
   BlogPage,
   CareersPage,
@@ -37,6 +38,7 @@ export function App() {
           <Route path="service-categories" element={<ServiceCategoriesPage />} />
           <Route path="services" element={<ServicesPage />} />
           <Route path="blog" element={<BlogPage />} />
+          <Route path="ai-blog" element={<AiBlogPage />} />
           <Route path="testimonials" element={<TestimonialsPage />} />
           <Route path="gallery" element={<GalleryPage />} />
           <Route path="careers" element={<CareersPage />} />

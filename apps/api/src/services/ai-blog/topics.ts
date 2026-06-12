@@ -1,0 +1,65 @@
+import { prisma } from "@isa/db";
+import { CONTENT_PILLARS } from "@isa/shared";
+
+/** Recent post titles (for the researcher's duplication check). */
+export async function getExistingTitles(limit = 100): Promise<string[]> {
+  const rows = await prisma.blogPost.findMany({
+    orderBy: { createdAt: "desc" },
+    take: limit,
+    select: { title: true },
+  });
+  return rows.map((r) => r.title);
+}
+
+/** Published slugs (for the writer to add real internal links). */
+export async function getPublishedSlugs(limit = 100): Promise<string[]> {
+  const rows = await prisma.blogPost.findMany({
+    where: { status: "PUBLISHED" },
+    orderBy: { publishedAt: "desc" },
+    take: limit,
+    select: { slug: true },
+  });
+  return rows.map((r) => r.slug);
+}
+
+const STOP = new Set(["the", "a", "an", "of", "for", "and", "to", "in", "your", "with", "is", "best"]);
+
+function tokenSet(s: string): Set<string> {
+  return new Set(
+    s
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, " ")
+      .split(/\s+/)
+      .filter((w) => w.length > 2 && !STOP.has(w)),
+  );
+}
+
+/** Jaccard similarity of two strings' significant words. */
+function jaccard(a: string, b: string): number {
+  const sa = tokenSet(a);
+  const sb = tokenSet(b);
+  if (sa.size === 0 || sb.size === 0) return 0;
+  let inter = 0;
+  for (const w of sa) if (sb.has(w)) inter++;
+  return inter / (sa.size + sb.size - inter);
+}
+
+/** True if `candidate` substantially overlaps any existing title. */
+export function isDuplicate(candidate: string, existing: string[], threshold = 0.7): boolean {
+  return existing.some((t) => jaccard(candidate, t) >= threshold);
+}
+
+/**
+ * Choose a pillar for a run. Explicit pillar wins; otherwise rotate by the
+ * count of existing posts so scheduled runs cycle through pillars over time.
+ */
+export async function pickPillar(explicit?: string): Promise<string> {
+  if (explicit) return explicit;
+  const count = await prisma.blogPost.count();
+  return CONTENT_PILLARS[count % CONTENT_PILLARS.length]!;
+}
+
+/** Current month/year for seasonal angles. */
+export function seasonHint(now = new Date()): string {
+  return now.toLocaleString("en-IN", { month: "long", year: "numeric" });
+}

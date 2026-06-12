@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import type { WithId } from "../lib/entities";
 import { useList, useRemove, useSave } from "../lib/entities";
 import { DataTable, type Column } from "./DataTable";
@@ -19,6 +19,7 @@ export function ResourcePage<T extends WithId>({
   columns,
   labelOf,
   newLabel = "New",
+  headerExtra,
 }: {
   entity: string;
   title: string;
@@ -27,6 +28,8 @@ export function ResourcePage<T extends WithId>({
   columns: Column<T>[];
   labelOf: (item: T) => string;
   newLabel?: string;
+  /** Optional extra controls rendered in the page header next to "+ New". */
+  headerExtra?: ReactNode;
 }) {
   const list = useList<T>(entity);
   const save = useSave<T>(entity);
@@ -46,9 +49,12 @@ export function ResourcePage<T extends WithId>({
     <div>
       <div className="page-head">
         <h1>{title}</h1>
-        <button className="btn-primary" onClick={() => setCreating(true)}>
-          + {newLabel}
-        </button>
+        <div className="row">
+          {headerExtra}
+          <button className="btn-primary" onClick={() => setCreating(true)}>
+            + {newLabel}
+          </button>
+        </div>
       </div>
 
       <ErrorAlert error={list.error} />

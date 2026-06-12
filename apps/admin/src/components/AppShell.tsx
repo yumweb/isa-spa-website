@@ -20,6 +20,7 @@ const GROUPS: Group[] = [
       { to: "/service-categories", label: "Service Categories" },
       { to: "/services", label: "Services" },
       { to: "/blog", label: "Blog" },
+      { to: "/ai-blog", label: "AI Blog" },
       { to: "/testimonials", label: "Testimonials" },
       { to: "/gallery", label: "Gallery" },
       { to: "/careers", label: "Careers" },

@@ -123,6 +123,16 @@ Input mapping: shared content schemas nest SEO under `seo:{metaTitle,metaDescrip
 - **`tsc` TS2742 in apps:** `apps/api` and `apps/admin` tsconfig set `declaration: false` (base sets it true for libs). Apps don't emit `.d.ts`, so this silences the "inferred type not portable" errors on Express routers.
 - `multer@1.x` is deprecated (works; flagged). Replace with a maintained upload lib (e.g. `@fastify/busboy`/`multer@2`) or move straight to S3/R2 presigned uploads before prod.
 
+## AI blog generator (OpenRouter, free models)
+
+Agentic generator that drafts SEO/AEO blog posts. Pipeline (plain sequential, no LangGraph): **research → write → SEO → quality (1 retry) → cover image (best-effort) → persist DRAFT**. Lives in `apps/api/src/services/ai-blog/` (`openrouter.ts` model-fallback client + JSON repair, `models.ts` Gemma-first chains, `context.ts` brand context, `topics.ts` pillar rotation + Jaccard dedup, `images.ts` Pexels→Unsplash, `prompts/*`, `index.ts` orchestrator, `scheduler.ts` node-cron). Runs tracked in **`BlogGenerationRun`** (`prisma`), posts created as **DRAFT** for review.
+
+- **Models:** Gemma-first per role (`google/gemma-4-31b-it:free`, `…-26b-a4b-it:free`) with strong free fallbacks; override via `OPENROUTER_MODEL_*`. Gemma rejects a `system` role → `openrouter.ts` folds it into the user turn.
+- **Trigger:** manual `POST /api/admin/ai-blog/generate {topic?,keywords?,pillar?}` → `202 {runId}` (fire-and-forget); poll `GET /api/admin/ai-blog/runs[/:id]`. Optional weekly cron, **off** unless `AI_BLOG_ENABLED=true` (rotates `CONTENT_PILLARS`).
+- **Admin UI:** `apps/admin` → "AI Blog" screen (generate form + runs history, auto-refreshes while running) + "✨ Generate with AI" on the Blog screen.
+- **Env (root `.env`):** `OPENROUTER_API_KEY` (required to actually run), optional `PEXELS_API_KEY`/`UNSPLASH_ACCESS_KEY` for covers, `AI_BLOG_ENABLED`, `AI_BLOG_CRON`. Without the key, runs fail gracefully → `BlogGenerationRun.status=FAILED` with a clear message.
+- **Cover images:** stored as `/uploads/*` (API static). `apps/web/next.config.js` **rewrites** `/uploads/*` → API origin so `<Image>` resolves CMS media. Repoint to S3/R2 for prod.
+
 ## Gotchas
 
 - ESM throughout (`"type": "module"`); use `.js` extensions in TS import paths for `api`/`db`/`shared`. Next handles these via the extensionAlias above.

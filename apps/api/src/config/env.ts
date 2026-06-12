@@ -32,4 +32,29 @@ export const env = {
   // Local media upload dir. cwd is apps/api (see ecosystem.config.cjs / dev),
   // so this resolves to apps/api/uploads (gitignored). Served at /uploads.
   uploadsDir: process.env.UPLOADS_DIR ?? path.resolve(process.cwd(), "uploads"),
+
+  // ── AI blog generator ──
+  openrouter: {
+    apiKey: process.env.OPENROUTER_API_KEY ?? "",
+    baseUrl: process.env.OPENROUTER_BASE_URL ?? "https://openrouter.ai/api/v1",
+    // OpenRouter asks for these to attribute traffic; harmless defaults.
+    referer: process.env.OPENROUTER_REFERER ?? "https://isaspa.in",
+    title: process.env.OPENROUTER_TITLE ?? "ISA Spa CMS",
+    // Per-role model overrides (else the Gemma-first defaults in models.ts apply).
+    models: {
+      writer: process.env.OPENROUTER_MODEL_WRITER,
+      researcher: process.env.OPENROUTER_MODEL_RESEARCHER,
+      seo: process.env.OPENROUTER_MODEL_SEO,
+      quality: process.env.OPENROUTER_MODEL_QUALITY,
+      imageQuery: process.env.OPENROUTER_MODEL_IMAGE_QUERY,
+    },
+  },
+  pexelsKey: process.env.PEXELS_API_KEY ?? "",
+  unsplashKey: process.env.UNSPLASH_ACCESS_KEY ?? "",
+  aiBlog: {
+    enabled: process.env.AI_BLOG_ENABLED === "true",
+    cron: process.env.AI_BLOG_CRON ?? "0 3 * * 1", // weekly, Mon 03:00
+    minQuality: Number(process.env.AI_BLOG_MIN_QUALITY ?? 70),
+    maxRetries: Number(process.env.AI_BLOG_MAX_RETRIES ?? 1),
+  },
 } as const;
