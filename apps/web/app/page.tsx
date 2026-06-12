@@ -112,29 +112,23 @@ export default async function HomePage() {
             ))}
           </div>
         </div>
-        <div style={{ position: "relative" }}>
-          <Photo
-            label="hero photo · serene treatment ritual"
-            style={{ borderRadius: "200px 200px 18px 18px", aspectRatio: "4/5", boxShadow: "0 30px 70px rgba(80,60,30,0.16)" }}
+        <div
+          style={{
+            position: "relative",
+            borderRadius: "200px 200px 18px 18px",
+            overflow: "hidden",
+            aspectRatio: "4/5",
+            boxShadow: "0 30px 70px rgba(80,60,30,0.16)",
+          }}
+        >
+          <Image
+            src="/hero-treatment.jpg"
+            alt="Serene salt-scrub treatment ritual by candlelight at Isa Spa"
+            fill
+            priority
+            sizes="(max-width: 980px) 100vw, 45vw"
+            style={{ objectFit: "cover" }}
           />
-          <div
-            style={{
-              position: "absolute",
-              top: -22,
-              left: -22,
-              width: 88,
-              height: 88,
-              background: "rgba(255,255,255,0.85)",
-              border: "1px solid #E7DCC8",
-              borderRadius: "50%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              animation: "isaFloat 5s ease-in-out infinite",
-            }}
-          >
-            <Image src="/isa-logo.png" alt="" width={58} height={58} style={{ width: 58, height: "auto", opacity: 0.9 }} />
-          </div>
         </div>
       </section>
 
