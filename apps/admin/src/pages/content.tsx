@@ -11,7 +11,7 @@ import {
   testimonialSchema,
 } from "@isa/shared";
 import { Link } from "react-router-dom";
-import { useList } from "../lib/entities";
+import { useList, useSave } from "../lib/entities";
 import { mediaUrl } from "../lib/api";
 import { ResourcePage } from "../components/ResourcePage";
 import { SEO_FIELDS, type FieldDef, type Option } from "../components/Form";
@@ -122,6 +122,31 @@ export function ServicesPage() {
 }
 
 // ─── Blog ───
+type BlogRow = { id: number; title: string; status: string; publishedAt?: string | null };
+
+/** One-click Publish / Unpublish toggle for a blog row. */
+function BlogPublishToggle({ item }: { item: BlogRow }) {
+  const save = useSave<BlogRow>("blog");
+  const isPublished = item.status === "PUBLISHED";
+  return (
+    <button
+      className={isPublished ? "btn-sm" : "btn-sm btn-primary"}
+      disabled={save.isPending}
+      title={isPublished ? "Move back to draft (removes from the live site)" : "Publish to the live site"}
+      onClick={() =>
+        save.mutate({
+          id: item.id,
+          body: isPublished
+            ? { status: "DRAFT" }
+            : { status: "PUBLISHED", publishedAt: item.publishedAt ?? new Date().toISOString() },
+        })
+      }
+    >
+      {save.isPending ? "…" : isPublished ? "Unpublish" : "Publish"}
+    </button>
+  );
+}
+
 export function BlogPage() {
   const fields: FieldDef[] = [
     { name: "title", label: "Title", type: "text", required: true },
@@ -153,6 +178,7 @@ export function BlogPage() {
         </Link>
       }
       labelOf={(i: any) => i.title}
+      rowActions={(i: any) => <BlogPublishToggle item={i} />}
       columns={[
         { header: "Title", render: (i: any) => i.title },
         { header: "Status", render: (i: any) => <StatusBadge value={i.status} /> },

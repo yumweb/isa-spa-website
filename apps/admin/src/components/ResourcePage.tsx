@@ -20,6 +20,7 @@ export function ResourcePage<T extends WithId>({
   labelOf,
   newLabel = "New",
   headerExtra,
+  rowActions,
 }: {
   entity: string;
   title: string;
@@ -30,6 +31,8 @@ export function ResourcePage<T extends WithId>({
   newLabel?: string;
   /** Optional extra controls rendered in the page header next to "+ New". */
   headerExtra?: ReactNode;
+  /** Optional per-row controls rendered before the Edit button (e.g. Publish). */
+  rowActions?: (item: T) => ReactNode;
 }) {
   const list = useList<T>(entity);
   const save = useSave<T>(entity);
@@ -66,6 +69,7 @@ export function ResourcePage<T extends WithId>({
           rows={list.data ?? []}
           actions={(item) => (
             <>
+              {rowActions?.(item)}
               <button className="btn-sm" onClick={() => setEditing(item)}>
                 Edit
               </button>
