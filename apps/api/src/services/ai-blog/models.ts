@@ -8,16 +8,45 @@ import { env } from "../../config/env.js";
  */
 export type ModelRole = "writer" | "researcher" | "seo" | "quality" | "imageQuery";
 
+// Gemma first (per preference), then a WIDE chain of diverse free providers.
+// Free models are throttled per-provider, so breadth across vendors (Google,
+// Meta, OpenAI-oss, NVIDIA, Qwen, Nous) maximises the chance one is available.
 const DEFAULTS: Record<ModelRole, string[]> = {
   writer: [
     "google/gemma-4-31b-it:free",
-    "nvidia/nemotron-3-ultra-550b-a55b:free",
     "meta-llama/llama-3.3-70b-instruct:free",
+    "openai/gpt-oss-120b:free",
+    "nvidia/nemotron-3-super-120b-a12b:free",
+    "nousresearch/hermes-3-llama-3.1-405b:free",
+    "qwen/qwen3-next-80b-a3b-instruct:free",
   ],
-  researcher: ["google/gemma-4-31b-it:free", "qwen/qwen3-next-80b-a3b-instruct:free"],
-  seo: ["google/gemma-4-26b-a4b-it:free", "google/gemma-4-31b-it:free"],
-  quality: ["google/gemma-4-31b-it:free", "openai/gpt-oss-120b:free"],
-  imageQuery: ["google/gemma-4-26b-a4b-it:free", "google/gemma-4-31b-it:free"],
+  researcher: [
+    "google/gemma-4-31b-it:free",
+    "openai/gpt-oss-120b:free",
+    "meta-llama/llama-3.3-70b-instruct:free",
+    "nvidia/nemotron-3-super-120b-a12b:free",
+    "qwen/qwen3-next-80b-a3b-instruct:free",
+  ],
+  seo: [
+    "google/gemma-4-26b-a4b-it:free",
+    "google/gemma-4-31b-it:free",
+    "openai/gpt-oss-20b:free",
+    "meta-llama/llama-3.3-70b-instruct:free",
+    "qwen/qwen3-next-80b-a3b-instruct:free",
+  ],
+  quality: [
+    "google/gemma-4-31b-it:free",
+    "openai/gpt-oss-120b:free",
+    "nvidia/nemotron-3-super-120b-a12b:free",
+    "meta-llama/llama-3.3-70b-instruct:free",
+    "qwen/qwen3-next-80b-a3b-instruct:free",
+  ],
+  imageQuery: [
+    "google/gemma-4-26b-a4b-it:free",
+    "google/gemma-4-31b-it:free",
+    "meta-llama/llama-3.2-3b-instruct:free",
+    "openai/gpt-oss-20b:free",
+  ],
 };
 
 /** Returns the ordered model chain for a role (env override first, then defaults). */

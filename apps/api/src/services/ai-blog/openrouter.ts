@@ -114,18 +114,21 @@ export async function chatJson<S extends z.ZodTypeAny>(
         };
       } catch (err) {
         lastErr = err;
-        const retryable = isRetryable(err);
-        logger.warn(
-          { role, model, attempt, retryable, err: (err as Error).message },
-          "ai-blog LLM call failed",
-        );
-        // Zod/JSON parse errors aren't worth retrying the same model many times,
-        // but one retry can help; rate/server errors get the full backoff.
-        if (retryable && attempt < RETRY_DELAYS.length) {
+        const status = (err as { status?: number }).status;
+        logger.warn({ role, model, attempt, status, err: (err as Error).message }, "ai-blog LLM call failed");
+        // 429 = this free model is throttled upstream; it won't clear in seconds,
+        // so fail over to the NEXT model immediately (after a tiny pause) rather
+        // than burning the backoff here.
+        if (status === 429) {
+          await sleep(800);
+          break;
+        }
+        // 5xx / network: brief backoff then retry the same model.
+        if (isRetryable(err) && attempt < RETRY_DELAYS.length) {
           await sleep(RETRY_DELAYS[attempt]!);
           continue;
         }
-        break; // fall through to next model
+        break; // parse error or exhausted → next model
       }
     }
   }
