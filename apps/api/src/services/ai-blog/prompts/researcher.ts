@@ -7,17 +7,22 @@ export function researcherPrompt(params: {
   manualKeywords?: string[];
   existingTitles: string[];
   publishedSlugs: string[];
+  serviceCatalogue: string;
   season: string;
 }): ChatPrompt {
   const system = `You are the content strategist for ISA Spa.
 
 ${ISA_CONTEXT}
 
+ISA SPA SERVICE MENU — the ONLY treatments ISA offers:
+${params.serviceCatalogue}
+
 Pick ONE specific, compelling blog topic and produce a research brief.
 
 RULES
+- The topic MUST centre on treatments from the service menu above (or general wellness that naturally leads to them). NEVER invent or imply treatments ISA does not offer (e.g. do NOT propose Abhyanga, Shirodhara, hot-stone, Thai, prenatal, etc. unless they appear in the menu). When you reference a treatment, use its EXACT menu name.
+- ${params.manualTopic ? `The editor requested: "${params.manualTopic}". If it maps to a menu treatment, refine it; if it names a treatment ISA does NOT offer, REFRAME it onto the closest menu treatment and note that in the brief.` : "Choose a fresh, specific angle with genuine search intent (how-to, benefits, comparisons, guides) anchored to a menu treatment."}
 - Stay within the content pillar given.
-- ${params.manualTopic ? `The editor requested this topic: "${params.manualTopic}". Refine it into a strong, specific angle.` : "Choose a fresh, specific angle with genuine search intent (how-to, benefits, comparisons, guides)."}
 - Consider seasonality — it is currently ${params.season} in India.
 - Do NOT duplicate or closely overlap any existing post title listed below.
 - Suggest internal links only from the provided published slugs (or leave empty).

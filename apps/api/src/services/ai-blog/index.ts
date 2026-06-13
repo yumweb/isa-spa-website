@@ -3,12 +3,12 @@ import type { GenerationTrigger } from "@isa/shared";
 import { env } from "../../config/env.js";
 import { logger } from "../../lib/logger.js";
 import { chatJson } from "./openrouter.js";
-import { researchOutput, writeOutput, seoOutput, qualityOutput, imageQueryOutput, type RunContext, type TokenUse } from "./types.js";
+import { researchOutput, writeOutput, seoOutput, qualityOutput, imageQueryOutput, type QualityOutput, type RunContext, type TokenUse } from "./types.js";
 import { researcherPrompt } from "./prompts/researcher.js";
 import { writerPrompt } from "./prompts/writer.js";
 import { seoPrompt } from "./prompts/seo.js";
 import { qualityPrompt } from "./prompts/quality.js";
-import { getExistingTitles, getPublishedSlugs, pickPillar, seasonHint } from "./topics.js";
+import { getExistingTitles, getPublishedSlugs, getServiceCatalogue, pickPillar, seasonHint } from "./topics.js";
 import { findCover } from "./images.js";
 
 export type GenerateOptions = {
@@ -79,7 +79,11 @@ export async function executeRun(runId: number, opts: GenerateOptions): Promise<
     await setStep("researching");
     const pillar = await pickPillar(opts.pillar);
     ctx.pillar = pillar;
-    const [existingTitles, publishedSlugs] = await Promise.all([getExistingTitles(), getPublishedSlugs()]);
+    const [existingTitles, publishedSlugs, serviceCatalogue] = await Promise.all([
+      getExistingTitles(),
+      getPublishedSlugs(),
+      getServiceCatalogue(),
+    ]);
     const research = await chatJson(
       "researcher",
       researcherPrompt({
@@ -88,6 +92,7 @@ export async function executeRun(runId: number, opts: GenerateOptions): Promise<
         manualKeywords: opts.keywords,
         existingTitles,
         publishedSlugs,
+        serviceCatalogue,
         season: seasonHint(),
       }),
       researchOutput,
@@ -102,25 +107,50 @@ export async function executeRun(runId: number, opts: GenerateOptions): Promise<
       await setStep(attempt === 0 ? "writing" : "rewriting");
       const write = await chatJson(
         "writer",
-        writerPrompt({ research: research.data, publishedSlugs, retryNotes }),
+        writerPrompt({ research: research.data, publishedSlugs, serviceCatalogue, retryNotes }),
         writeOutput,
       );
       track(ctx, "writer", write);
       ctx.write = write.data;
 
+      // SEO — non-fatal: a throttled free model shouldn't waste the article.
+      // Fall back to deriving meta from the post itself.
       await setStep("seo");
-      const seo = await chatJson("seo", seoPrompt({ research: research.data, write: write.data }), seoOutput);
-      track(ctx, "seo", seo);
-      ctx.seo = seo.data;
+      try {
+        const seo = await chatJson("seo", seoPrompt({ research: research.data, write: write.data }), seoOutput);
+        track(ctx, "seo", seo);
+        ctx.seo = seo.data;
+      } catch (err) {
+        logger.warn({ err: (err as Error).message, runId }, "seo step failed — deriving fallback meta");
+        ctx.seo = {
+          metaTitle: write.data.title.slice(0, 70),
+          metaDescription: write.data.excerpt.slice(0, 160),
+          seoScore: 0,
+        };
+      }
 
+      // Quality — non-fatal: if it can't grade, accept the draft (a human reviews
+      // it anyway before publishing).
       await setStep("quality");
-      const quality = await chatJson("quality", qualityPrompt({ write: write.data, minScore: env.aiBlog.minQuality }), qualityOutput);
-      track(ctx, "quality", quality);
-      ctx.quality = quality.data;
+      let q: QualityOutput | null = null;
+      try {
+        const quality = await chatJson("quality", qualityPrompt({ write: write.data, serviceCatalogue, minScore: env.aiBlog.minQuality }), qualityOutput);
+        track(ctx, "quality", quality);
+        q = quality.data;
+      } catch (err) {
+        logger.warn({ err: (err as Error).message, runId }, "quality step failed — skipping gate");
+      }
+      ctx.quality = q ?? {
+        qualityScore: 0,
+        passedQuality: true,
+        qualityNotes: "Quality check skipped (model unavailable).",
+        aiIsmsFound: [],
+        issues: [],
+      };
 
-      if (quality.data.passedQuality || attempt >= env.aiBlog.maxRetries) break;
+      if (!q || q.passedQuality || attempt >= env.aiBlog.maxRetries) break;
       ctx.retryCount = attempt + 1;
-      retryNotes = [...quality.data.issues, ...quality.data.aiIsmsFound.map((p) => `Remove phrase: "${p}"`)].join("\n");
+      retryNotes = [...q.issues, ...q.aiIsmsFound.map((p) => `Remove phrase: "${p}"`)].join("\n");
       await prisma.blogGenerationRun.update({ where: { id: runId }, data: { retryCount: ctx.retryCount } });
     }
 

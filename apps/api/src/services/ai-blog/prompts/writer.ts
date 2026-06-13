@@ -5,6 +5,7 @@ import type { ResearchOutput } from "../types.js";
 export function writerPrompt(params: {
   research: ResearchOutput;
   publishedSlugs: string[];
+  serviceCatalogue: string;
   retryNotes?: string;
 }): ChatPrompt {
   const { research } = params;
@@ -12,7 +13,13 @@ export function writerPrompt(params: {
 
 ${ISA_CONTEXT}
 
+ISA SPA SERVICE MENU — the ONLY treatments ISA offers (use EXACT names; never invent others):
+${params.serviceCatalogue}
+
 Write a complete, publish-ready blog article in British/Indian English (en-IN).
+
+ACCURACY (critical)
+- Only name/recommend treatments that appear in the service menu above, using their exact names. Do NOT mention treatments ISA does not offer (no Abhyanga, Shirodhara, hot-stone, Thai, etc. unless listed). You may discuss general wellness concepts, but every ISA treatment reference must be on-menu.
 
 STYLE
 - Warm, serene, sensory and elegant. Short paragraphs (2-4 sentences). Active voice.

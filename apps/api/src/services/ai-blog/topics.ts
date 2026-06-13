@@ -1,6 +1,27 @@
 import { prisma } from "@isa/db";
 import { CONTENT_PILLARS } from "@isa/shared";
 
+/**
+ * The real ISA Spa service menu, formatted for prompts. This is the SOURCE OF
+ * TRUTH the generator must stay within — it must never invent treatments ISA
+ * doesn't offer. Pulled live from the CMS-managed ServiceCategory/Service rows.
+ */
+export async function getServiceCatalogue(): Promise<string> {
+  const cats = await prisma.serviceCategory.findMany({
+    orderBy: { order: "asc" },
+    include: { services: { orderBy: { order: "asc" }, select: { name: true, duration: true, price: true } } },
+  });
+  if (cats.length === 0) return "(No services configured in the CMS yet.)";
+  return cats
+    .map((c) => {
+      const items = c.services
+        .map((s) => `${s.name}${s.duration ? ` (${s.duration})` : ""}${s.price ? ` — ${s.price}` : ""}`)
+        .join("; ");
+      return `• ${c.name}: ${items || "(no items)"}`;
+    })
+    .join("\n");
+}
+
 /** Recent post titles (for the researcher's duplication check). */
 export async function getExistingTitles(limit = 100): Promise<string[]> {
   const rows = await prisma.blogPost.findMany({
