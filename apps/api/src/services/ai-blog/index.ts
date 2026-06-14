@@ -153,17 +153,32 @@ export async function executeRun(runId: number, opts: GenerateOptions): Promise<
       } catch (err) {
         logger.warn({ err: (err as Error).message, runId }, "quality step failed — skipping gate");
       }
-      ctx.quality = q ?? {
-        qualityScore: 0,
-        passedQuality: true,
-        qualityNotes: "Quality check skipped (model unavailable).",
-        aiIsmsFound: [],
-        issues: [],
-      };
+      // Deterministic price gate — independent of the (rate-limit-prone) quality
+      // LLM. Concrete currency amounts (₹2 crore, Rs 1,499, etc.) must never
+      // appear; word-level "investment"/"%" are fine. Forces a rewrite if found.
+      const priceHits = [...write.data.body.matchAll(/(?:₹|\bRs\.?\s*)\s?\d[\d,.]*\s*(?:lakh|crore|cr|k|l)?/gi)]
+        .map((m) => m[0].trim())
+        .slice(0, 6);
 
-      if (!q || q.passedQuality || attempt >= env.aiBlog.maxRetries) break;
+      const llmPassed = q?.passedQuality ?? true; // skipped gate counts as pass
+      const passed = llmPassed && priceHits.length === 0;
+      ctx.quality = q
+        ? { ...q, passedQuality: passed, issues: [...q.issues, ...priceHits.map((h) => `PRICING: ${h}`)] }
+        : {
+            qualityScore: 0,
+            passedQuality: passed,
+            qualityNotes: "Quality check skipped (model unavailable).",
+            aiIsmsFound: [],
+            issues: priceHits.map((h) => `PRICING: ${h}`),
+          };
+
+      if (passed || attempt >= env.aiBlog.maxRetries) break;
       ctx.retryCount = attempt + 1;
-      retryNotes = [...q.issues, ...q.aiIsmsFound.map((p) => `Remove phrase: "${p}"`)].join("\n");
+      retryNotes = [
+        ...(q?.issues ?? []),
+        ...(q?.aiIsmsFound ?? []).map((p) => `Remove phrase: "${p}"`),
+        ...priceHits.map((h) => `Remove the price figure "${h}" — never state any ₹ amount; say it varies by location.`),
+      ].join("\n");
       await prisma.blogGenerationRun.update({ where: { id: runId }, data: { retryCount: ctx.retryCount } });
     }
 
