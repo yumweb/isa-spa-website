@@ -99,3 +99,20 @@ export async function pickPillar(
 export function seasonHint(now = new Date()): string {
   return now.toLocaleString("en-IN", { month: "long", year: "numeric" });
 }
+
+/**
+ * Infer the target audience from a manual topic (+ keywords) so a typed topic
+ * routes to the right audience even when none is explicitly chosen. Franchise
+ * and hotel signals are checked first (they're more specific); otherwise the
+ * topic is treated as Consumer.
+ */
+export function inferAudience(text: string): BlogAudience {
+  const t = ` ${text.toLowerCase()} `;
+  const franchise =
+    /\b(franchis\w*|investor|investment|roi|return on investment|entrepreneur\w*|unit economics|own(ing)? a spa|ownership|business model|expansion)\b/;
+  const hotel =
+    /\b(hotel\w*|hospitality|guest\w*|resort\w*|property|occupancy|amenit\w*|tourism|in-?room|check-?in)\b/;
+  if (franchise.test(t)) return "Franchise";
+  if (hotel.test(t)) return "Hotel";
+  return "Consumer";
+}

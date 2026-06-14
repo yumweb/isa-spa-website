@@ -43,6 +43,7 @@ export function AiBlogPage() {
   const [topic, setTopic] = useState("");
   const [keywords, setKeywords] = useState("");
   const [pillar, setPillar] = useState("");
+  const [audience, setAudience] = useState(""); // "" = auto-detect
   const [note, setNote] = useState<string | null>(null);
 
   const runs = useQuery({
@@ -62,7 +63,7 @@ export function AiBlogPage() {
 
   const generate = useMutation({
     mutationFn: () => {
-      const body: { topic?: string; keywords?: string[]; pillar?: string } = {};
+      const body: { topic?: string; keywords?: string[]; pillar?: string; audience?: string } = {};
       if (topic.trim()) body.topic = topic.trim();
       const kw = keywords
         .split(",")
@@ -70,6 +71,7 @@ export function AiBlogPage() {
         .filter(Boolean);
       if (kw.length) body.keywords = kw;
       if (pillar) body.pillar = pillar;
+      if (audience) body.audience = audience;
       return api<GenerateResp>("/admin/ai-blog/generate", {
         method: "POST",
         body: JSON.stringify(body),
@@ -80,6 +82,7 @@ export function AiBlogPage() {
       setTopic("");
       setKeywords("");
       setPillar("");
+      setAudience("");
       qc.invalidateQueries({ queryKey: ["ai-runs"] });
     },
   });
@@ -132,6 +135,17 @@ export function AiBlogPage() {
         </div>
 
         <div className="field-row">
+          <div className="field">
+            <label>Audience</label>
+            <select value={audience} onChange={(e) => setAudience(e.target.value)}>
+              <option value="">Auto-detect from topic</option>
+              {BLOG_AUDIENCES.map((aud) => (
+                <option key={aud} value={aud}>
+                  {aud}
+                </option>
+              ))}
+            </select>
+          </div>
           <div className="field">
             <label>Content pillar</label>
             <select value={pillar} onChange={(e) => setPillar(e.target.value)}>

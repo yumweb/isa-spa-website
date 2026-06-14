@@ -8,7 +8,7 @@ import { researcherPrompt } from "./prompts/researcher.js";
 import { writerPrompt } from "./prompts/writer.js";
 import { seoPrompt } from "./prompts/seo.js";
 import { qualityPrompt } from "./prompts/quality.js";
-import { getExistingTitles, getPublishedSlugs, getServiceCatalogue, pickPillar, seasonHint } from "./topics.js";
+import { getExistingTitles, getPublishedSlugs, getServiceCatalogue, inferAudience, pickPillar, seasonHint } from "./topics.js";
 import { findCover } from "./images.js";
 
 export type GenerateOptions = {
@@ -78,7 +78,14 @@ export async function executeRun(runId: number, opts: GenerateOptions): Promise<
   try {
     // 1) Research / topic selection
     await setStep("researching");
-    const picked = await pickPillar(opts.pillar, opts.audience);
+    // Resolve audience: explicit wins; else infer from a manual topic; else
+    // (scheduled, no topic) pickPillar rotates across all audiences.
+    const audience =
+      opts.audience ??
+      (!opts.pillar && opts.topic
+        ? inferAudience(`${opts.topic} ${(opts.keywords ?? []).join(" ")}`)
+        : undefined);
+    const picked = await pickPillar(opts.pillar, audience);
     ctx.pillar = picked.pillar;
     ctx.audience = picked.audience;
     const [existingTitles, publishedSlugs, serviceCatalogue] = await Promise.all([
