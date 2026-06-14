@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { pageMeta } from "@/lib/seo";
 import { Photo } from "@/components/site/primitives";
 import { aboutValues, aboutPresence } from "@/lib/marketing";
@@ -21,13 +20,6 @@ export default function AboutPage() {
           textAlign: "center",
         }}
       >
-        <Image
-          src="/isa-logo.png"
-          alt="Isa Spa"
-          width={64}
-          height={64}
-          style={{ width: 64, height: "auto", opacity: 0.9, margin: "0 auto 20px" }}
-        />
         <div style={{ fontSize: 12, letterSpacing: "0.3em", textTransform: "uppercase", color: "#A8823A", marginBottom: 16 }}>
           Our Story
         </div>
