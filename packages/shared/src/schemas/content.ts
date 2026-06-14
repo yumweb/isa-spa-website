@@ -6,7 +6,7 @@ import { BLOG_AUDIENCES, PUBLISH_STATUSES, ROLES } from "../constants.js";
 const seo = z.object({
   metaTitle: z.string().trim().max(200).optional(),
   metaDescription: z.string().trim().max(400).optional(),
-  ogImage: z.string().trim().max(500).optional(),
+  ogImage: z.string().trim().max(500).nullish(), // nullish so clearing in the CMS sets it to null
   canonical: z.string().trim().max(500).optional(),
 });
 
@@ -41,7 +41,7 @@ export const serviceCategorySchema = z.object({
   name: z.string().trim().min(2).max(200),
   slug,
   tagline: z.string().trim().max(400).optional(),
-  heroImage: z.string().trim().max(500).optional(),
+  heroImage: z.string().trim().max(500).nullish(),
   order: z.number().int().default(0),
   seo: seo.optional(),
 });
@@ -53,7 +53,7 @@ export const serviceSchema = z.object({
   duration: z.string().trim().max(80).optional(), // "60 / 90 min"
   price: z.string().trim().max(80).optional(), // "₹1,999"
   description: z.string().trim().max(1000).optional(),
-  image: z.string().trim().max(500).optional(),
+  image: z.string().trim().max(500).nullish(),
   order: z.number().int().default(0),
 });
 
@@ -62,7 +62,7 @@ export const blogPostSchema = z.object({
   slug,
   excerpt: z.string().trim().max(500).optional(),
   body: z.string().min(1), // rich-text HTML/JSON
-  coverImage: z.string().trim().max(500).optional(),
+  coverImage: z.string().trim().max(500).nullish(), // nullish so clearing the cover in the CMS removes it
   author: z.string().trim().max(160).optional(),
   tags: z.array(z.string()).default([]),
   status,

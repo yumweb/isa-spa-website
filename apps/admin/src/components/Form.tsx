@@ -108,6 +108,11 @@ function buildPayload(fields: FieldDef[], values: Values): Values {
       case "images":
         val = Array.isArray(raw) ? raw : [];
         break;
+      case "media":
+        // Empty = explicitly cleared. Send null (not undefined) so the API
+        // clears the column — undefined gets dropped from the JSON payload.
+        val = raw === "" || raw == null ? null : raw;
+        break;
       case "select":
         if (f.numeric) val = raw === "" || raw == null ? undefined : Number(raw);
         else val = raw === "" ? undefined : raw;
