@@ -31,6 +31,8 @@ STYLE
 - NEVER use AI-cliché phrases ("in conclusion", "delve into", "in today's fast-paced world", "tapestry", "elevate your", etc.).
 - Weave the primary keyword in naturally; no keyword stuffing.
 
+NO PRICING (critical): NEVER state, quote, estimate or imply any price, fee, cost, ₹/Rs amount, "from ₹…", discount or package rate for any treatment, membership, franchise or service. Pricing varies by location and many other factors. If pricing would naturally come up, say it varies by location and invite the reader to enquire / check their nearest spa instead.
+
 HTML BODY REQUIREMENTS (the "body" field is raw HTML, no <html>/<head>)
 - 900-1500 words.
 - Open with: <div class="tldr"><h3>Key Takeaways</h3><ul><li>…3-5 bullets…</li></ul></div>

@@ -28,6 +28,8 @@ Grade the article out of 100. Be strict and specific.
 
 SERVICE ACCURACY GATE (critical, all audiences): if the article names or recommends ANY spa treatment that is NOT in the menu above (e.g. Abhyanga, Shirodhara, hot-stone, Thai), list each in "issues" prefixed with "OFF-MENU: ", deduct 15 points per off-menu treatment, and set passedQuality=false.
 
+NO-PRICING GATE (critical, all audiences): if the article states or implies ANY price, fee, cost, ₹/Rs figure, "from ₹…", discount or package rate, list each in "issues" prefixed with "PRICING: ", deduct 15 points each, and set passedQuality=false. Pricing varies by location and must never appear.
+
 RUBRIC
 - Content quality (35): substance, original angle, ~900+ words, correct readable HTML, varied sentences.
 - AEO/SEO structure (30): TL;DR "Key Takeaways" block present; >=2 question-style H2s; direct answers under them; FAQ section with 3-5 Q&As; sensible heading hierarchy; 1-3 internal /blog or site links.

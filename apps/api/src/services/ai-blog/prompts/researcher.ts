@@ -32,7 +32,7 @@ RULES
 - Consider seasonality — it is currently ${params.season} in India.
 - Do NOT duplicate or closely overlap any existing post title listed below.
 - Suggest internal links only from the provided published slugs (or leave empty); ${a.linkHint}.
-- Indian audience, en-IN, ₹ context where relevant.
+- Indian audience, en-IN. Do NOT choose a pricing/cost-comparison angle and do NOT put any price figures in the brief or keywords — pricing varies by location.
 
 OUTPUT — return ONLY valid JSON, no markdown:
 {

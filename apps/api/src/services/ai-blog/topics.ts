@@ -9,13 +9,15 @@ import { CONTENT_PILLARS, type BlogAudience, type ContentPillar } from "@isa/sha
 export async function getServiceCatalogue(): Promise<string> {
   const cats = await prisma.serviceCategory.findMany({
     orderBy: { order: "asc" },
-    include: { services: { orderBy: { order: "asc" }, select: { name: true, duration: true, price: true } } },
+    include: { services: { orderBy: { order: "asc" }, select: { name: true, duration: true } } },
   });
   if (cats.length === 0) return "(No services configured in the CMS yet.)";
+  // Prices are deliberately omitted — they vary by location and must never
+  // appear in generated posts.
   return cats
     .map((c) => {
       const items = c.services
-        .map((s) => `${s.name}${s.duration ? ` (${s.duration})` : ""}${s.price ? ` — ${s.price}` : ""}`)
+        .map((s) => `${s.name}${s.duration ? ` (${s.duration})` : ""}`)
         .join("; ");
       return `• ${c.name}: ${items || "(no items)"}`;
     })
