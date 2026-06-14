@@ -88,11 +88,10 @@ export function blogPostingJsonLd(post: {
   };
 }
 
-/** JSON-LD for a single spa service. */
+/** JSON-LD for a single spa service. Pricing is omitted — it varies by location. */
 export function serviceJsonLd(svc: {
   name: string;
   description?: string | null;
-  price?: string | null;
   category?: string;
 }) {
   return {
@@ -103,16 +102,15 @@ export function serviceJsonLd(svc: {
     serviceType: svc.category ?? "Spa treatment",
     provider: { "@type": "Organization", name: SITE.name, url: SITE.url },
     areaServed: "IN",
-    offers: svc.price ? { "@type": "Offer", price: svc.price, priceCurrency: "INR" } : undefined,
   };
 }
 
-/** JSON-LD `OfferCatalog` listing a category's services. */
+/** JSON-LD `OfferCatalog` listing a category's services (no prices — they vary by location). */
 export function offerCatalogJsonLd(category: {
   name: string;
   slug: string;
   tagline?: string | null;
-  services: { name: string; description?: string | null; price?: string | null }[];
+  services: { name: string; description?: string | null }[];
 }) {
   return {
     "@context": "https://schema.org",
@@ -121,10 +119,8 @@ export function offerCatalogJsonLd(category: {
     description: category.tagline ?? undefined,
     url: `${SITE.url}/services/${category.slug}`,
     itemListElement: category.services.map((s) => ({
-      "@type": "Offer",
-      itemOffered: { "@type": "Service", name: s.name, description: s.description ?? undefined },
-      price: s.price ?? undefined,
-      priceCurrency: s.price ? "INR" : undefined,
+      "@type": "ListItem",
+      item: { "@type": "Service", name: s.name, description: s.description ?? undefined },
     })),
   };
 }
