@@ -166,8 +166,12 @@ export async function executeRun(runId: number, opts: GenerateOptions): Promise<
       const q = await chatJson(
         "imageQuery",
         {
-          system: "You produce a short stock-photo search query. Return ONLY JSON.",
-          user: `Topic: ${ctx.research!.topic}\nReturn {"query":"3-6 words, e.g. 'spa massage candles wellness'"}`,
+          system:
+            "You produce a short stock-photo search query for a luxury Indian spa blog (conservative culture). " +
+            "MODESTY RULE: the image must NOT show exposed skin, bare backs/shoulders, swimwear, or intimate body close-ups. " +
+            "Prefer spa AMBIANCE and OBJECTS: interiors, candles, flowers, essential oils & bottles, stacked towels, lotus, " +
+            "herbal tea, stones, product flat-lays, a hand holding flowers/oil. Return ONLY JSON.",
+          user: `Topic: ${ctx.research!.topic}\nReturn {"query":"3-6 words of modest spa ambiance/objects, e.g. 'spa candles flowers oils' or 'luxury spa interior towels'"}`,
         },
         imageQueryOutput,
       );

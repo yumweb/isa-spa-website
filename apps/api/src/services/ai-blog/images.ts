@@ -20,10 +20,20 @@ async function downloadToMedia(imageUrl: string, alt: string, mime = "image/jpeg
   return url;
 }
 
+/**
+ * Steer queries toward modest, culturally-appropriate spa imagery (India,
+ * conservative audience): bias to ambiance/objects and exclude body/skin terms.
+ */
+function modestQuery(query: string): string {
+  const bad = /\b(massage|body|back|nude|naked|bikini|swimsuit|skin|topless|shoulder|spine|towel wrap)\b/gi;
+  const cleaned = query.replace(bad, " ").replace(/\s+/g, " ").trim();
+  return `${cleaned || "luxury spa"} spa wellness ambiance candles flowers`.trim();
+}
+
 async function fromPexels(query: string): Promise<string | null> {
   if (!env.pexelsKey) return null;
   const res = await fetch(
-    `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&orientation=landscape&per_page=1`,
+    `https://api.pexels.com/v1/search?query=${encodeURIComponent(modestQuery(query))}&orientation=landscape&per_page=1`,
     { headers: { Authorization: env.pexelsKey } },
   );
   if (!res.ok) return null;
@@ -33,8 +43,9 @@ async function fromPexels(query: string): Promise<string | null> {
 
 async function fromUnsplash(query: string): Promise<string | null> {
   if (!env.unsplashKey) return null;
+  // content_filter=high applies Unsplash's strictest safe-search.
   const res = await fetch(
-    `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&orientation=landscape&per_page=1`,
+    `https://api.unsplash.com/search/photos?query=${encodeURIComponent(modestQuery(query))}&orientation=landscape&content_filter=high&per_page=1`,
     { headers: { Authorization: `Client-ID ${env.unsplashKey}` } },
   );
   if (!res.ok) return null;
@@ -43,8 +54,9 @@ async function fromUnsplash(query: string): Promise<string | null> {
 }
 
 /**
- * Source a cover image for a topic: Pexels → Unsplash. Best-effort — any
- * failure returns null and the post keeps the front-end placeholder.
+ * Source a cover image for a topic: Pexels → Unsplash. Queries are steered to
+ * modest spa ambiance/objects (no exposed bodies). Best-effort — any failure
+ * returns null and the post keeps the front-end placeholder.
  */
 export async function findCover(query: string, alt: string): Promise<CoverResult> {
   try {
