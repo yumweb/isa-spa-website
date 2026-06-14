@@ -9,6 +9,7 @@ const NAV = [
   { href: "/", label: "Home" },
   { href: "/services", label: "Services" },
   { href: "/spa-locator", label: "Spa Locator" },
+  { href: "/isa-spa-membership", label: "Membership" },
   { href: "/about-us", label: "About" },
   { href: "/blog", label: "Blog" },
   { href: "/franchise", label: "Franchise" },
