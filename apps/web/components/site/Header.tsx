@@ -57,7 +57,7 @@ export function Header() {
         }}
       >
         <Link href="/" style={{ display: "flex", alignItems: "center", gap: 10 }} aria-label="Isa Spa — home">
-          <Image src="/isa-logo.png" alt="Isa Spa" width={120} height={52} priority style={{ height: 52, width: "auto" }} />
+          <Image src="/isa-logo.png" alt="Isa Spa" width={144} height={62} priority style={{ height: 62, width: "auto" }} />
         </Link>
 
         {/* Desktop nav */}
