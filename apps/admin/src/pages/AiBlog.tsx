@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { CONTENT_PILLARS, GENERATION_STATUSES } from "@isa/shared";
+import { BLOG_AUDIENCES, CONTENT_PILLARS, GENERATION_STATUSES } from "@isa/shared";
 import { api } from "../lib/api";
 import { Drawer, ErrorAlert, Spinner, StatusBadge } from "../components/ui";
 
@@ -135,11 +135,15 @@ export function AiBlogPage() {
           <div className="field">
             <label>Content pillar</label>
             <select value={pillar} onChange={(e) => setPillar(e.target.value)}>
-              <option value="">Auto (rotate pillars)</option>
-              {CONTENT_PILLARS.map((p) => (
-                <option key={p} value={p}>
-                  {p}
-                </option>
+              <option value="">Auto (rotate all pillars)</option>
+              {BLOG_AUDIENCES.map((aud) => (
+                <optgroup key={aud} label={aud}>
+                  {CONTENT_PILLARS.filter((p) => p.audience === aud).map((p) => (
+                    <option key={p.pillar} value={p.pillar}>
+                      {p.pillar}
+                    </option>
+                  ))}
+                </optgroup>
               ))}
             </select>
           </div>

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { GenerationTrigger } from "@isa/shared";
+import type { BlogAudience, GenerationTrigger } from "@isa/shared";
 
 /** Validated JSON shapes returned by each LLM step. */
 
@@ -68,6 +68,7 @@ export type RunContext = {
   topic?: string;
   keywords?: string[];
   pillar?: string;
+  audience?: BlogAudience;
   // step outputs
   research?: ResearchOutput;
   write?: WriteOutput;

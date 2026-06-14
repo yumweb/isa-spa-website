@@ -49,20 +49,31 @@ export type GenerationStatus = (typeof GENERATION_STATUSES)[number];
 export const GENERATION_TRIGGERS = ["MANUAL", "SCHEDULED"] as const;
 export type GenerationTrigger = (typeof GENERATION_TRIGGERS)[number];
 
+/** The three ISA Spa audiences a blog post can target. */
+export const BLOG_AUDIENCES = ["Consumer", "Franchise", "Hotel"] as const;
+export type BlogAudience = (typeof BLOG_AUDIENCES)[number];
+
 /**
- * Default wellness content pillars the generator rotates through on scheduled
- * runs (editable in the CMS Settings `aiBlog.pillars` key). Each is a broad
- * theme; the researcher derives a specific, seasonal topic within it.
+ * Content pillars the generator rotates through, tagged by audience. The
+ * researcher derives a specific, seasonal topic within a pillar; the writer
+ * adapts tone, internal links and CTA to the audience (Consumer = book a
+ * ritual; Franchise/Hotel = B2B enquiry). Each is a broad evergreen theme.
  */
-export const CONTENT_PILLARS = [
-  "Signature massage therapies & their benefits",
-  "Facials, skincare & glowing complexion",
-  "Foot spa, reflexology & pedicure care",
-  "Body polishing, scrubs & detox rituals",
-  "Self-care rituals & mindful wellness",
-  "Ayurveda & traditional Indian wellness",
-  "Stress relief, sleep & mental calm",
-  "Spa etiquette & first-visit guides",
-  "Seasonal & festive wellness in India",
-  "Couples, gifting & special-occasion spa experiences",
-] as const;
+export type ContentPillar = { audience: BlogAudience; pillar: string };
+
+export const CONTENT_PILLARS: ContentPillar[] = [
+  // Consumer — spa-goers / wellness seekers
+  { audience: "Consumer", pillar: "Spa & self-care as a modern wellness necessity" },
+  { audience: "Consumer", pillar: "Health & therapeutic benefits of massage, facials & body treatments" },
+  { audience: "Consumer", pillar: "Mental wellbeing: stress relief, better sleep & relaxation" },
+  { audience: "Consumer", pillar: "Spa education: myths debunked, etiquette & what to expect on a first visit" },
+  { audience: "Consumer", pillar: "Seasonal, festive & lifestyle wellness in India" },
+  // Franchise — prospective franchisees / investors
+  { audience: "Franchise", pillar: "The spa franchise opportunity & India's growing wellness market" },
+  { audience: "Franchise", pillar: "Franchise economics: investment, ROI & reduced business risk" },
+  { audience: "Franchise", pillar: "Independent vs franchise & first-time spa entrepreneur guidance" },
+  // Hotel — hoteliers / hospitality groups
+  { audience: "Hotel", pillar: "Hotel spas & elevating guest satisfaction" },
+  { audience: "Hotel", pillar: "Spa as a hotel revenue stream & business case" },
+  { audience: "Hotel", pillar: "Wellness hospitality & wellness-tourism trends" },
+];

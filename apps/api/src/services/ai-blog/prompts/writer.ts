@@ -1,30 +1,35 @@
-import { ISA_CONTEXT } from "../context.js";
+import type { BlogAudience } from "@isa/shared";
+import { ISA_CONTEXT, audienceBrief } from "../context.js";
 import type { ChatPrompt } from "../openrouter.js";
 import type { ResearchOutput } from "../types.js";
 
 export function writerPrompt(params: {
+  audience: BlogAudience;
   research: ResearchOutput;
   publishedSlugs: string[];
   serviceCatalogue: string;
   retryNotes?: string;
 }): ChatPrompt {
   const { research } = params;
-  const system = `You are a senior wellness & lifestyle writer for ISA Spa.
+  const a = audienceBrief(params.audience);
+  const consumer = params.audience === "Consumer";
+  const system = `You are a senior writer for ISA Spa.
 
 ${ISA_CONTEXT}
 
 ISA SPA SERVICE MENU — the ONLY treatments ISA offers (use EXACT names; never invent others):
 ${params.serviceCatalogue}
 
+AUDIENCE: ${params.audience}. You are writing for ${a.reader}.
+ANGLE: ${a.focus}
+ACCURACY: ${a.grounding}
+
 Write a complete, publish-ready blog article in British/Indian English (en-IN).
 
-ACCURACY (critical)
-- Only name/recommend treatments that appear in the service menu above, using their exact names. Do NOT mention treatments ISA does not offer (no Abhyanga, Shirodhara, hot-stone, Thai, etc. unless listed). You may discuss general wellness concepts, but every ISA treatment reference must be on-menu.
-
 STYLE
-- Warm, serene, sensory and elegant. Short paragraphs (2-4 sentences). Active voice.
+- ${consumer ? "Warm, serene, sensory and elegant." : "Credible, clear and persuasive B2B tone — still warm and on-brand, not corporate-dry."} Short paragraphs (2-4 sentences). Active voice.
 - NEVER use AI-cliché phrases ("in conclusion", "delve into", "in today's fast-paced world", "tapestry", "elevate your", etc.).
-- Weave the primary keyword in naturally; no keyword stuffing. No medical claims.
+- Weave the primary keyword in naturally; no keyword stuffing.
 
 HTML BODY REQUIREMENTS (the "body" field is raw HTML, no <html>/<head>)
 - 900-1500 words.
@@ -32,9 +37,9 @@ HTML BODY REQUIREMENTS (the "body" field is raw HTML, no <html>/<head>)
 - Use <h2>, <h3>, <p>, <ul>/<li>, <strong>, <em>, <blockquote>.
 - At least 2 of the <h2> headings MUST be phrased as questions (use the "peopleAlsoAsk" list).
 - The first 1-2 sentences under each question-<h2> must DIRECTLY answer it (for AI answer engines).
-- Include 1-3 internal links as <a href="/blog/SLUG">…</a>, using ONLY these slugs: ${params.publishedSlugs.length ? params.publishedSlugs.join(", ") : "(none — skip internal links)"}.
+- Include 1-3 internal links as <a href="/blog/SLUG">…</a> using ONLY these slugs: ${params.publishedSlugs.length ? params.publishedSlugs.join(", ") : "(none — skip blog links)"}; also ${a.linkHint}.
 - End the body with <div class="faq-section"><h2>Frequently Asked Questions</h2>…<h3>question</h3><p>answer</p>…</div> mirroring faqItems.
-- Close with a gentle CTA to book a ritual or find a nearby ISA Spa (link <a href="/spa-locator">…</a> or <a href="/appointment">…</a>).
+- Close with ${a.cta}.
 ${params.retryNotes ? `\nREVISION — the previous draft was rejected by QA. Fix these issues:\n${params.retryNotes}` : ""}
 
 OUTPUT — return ONLY valid JSON, no markdown:
@@ -43,12 +48,13 @@ OUTPUT — return ONLY valid JSON, no markdown:
   "slug": "lowercase-hyphenated-slug",
   "excerpt": "150-300 char summary",
   "body": "<div class=\\"tldr\\">…full HTML…</div>",
-  "tags": ["tag1", "tag2", "tag3"],
+  "tags": ["tag1", "tag2", "${params.audience}"],
   "readingTimeMinutes": 6,
   "faqItems": [{ "question": "…?", "answer": "…" }]
 }`;
 
-  const user = `Topic: ${research.topic}
+  const user = `Audience: ${params.audience}
+Topic: ${research.topic}
 
 Research brief:
 ${research.researchBrief}

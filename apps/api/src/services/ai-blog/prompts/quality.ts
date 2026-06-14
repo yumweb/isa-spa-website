@@ -1,9 +1,16 @@
+import type { BlogAudience } from "@isa/shared";
 import { AI_ISM_PHRASES, ISA_CONTEXT } from "../context.js";
 import type { ChatPrompt } from "../openrouter.js";
 import type { WriteOutput } from "../types.js";
 
-export function qualityPrompt(params: { write: WriteOutput; serviceCatalogue: string; minScore: number }): ChatPrompt {
+export function qualityPrompt(params: {
+  write: WriteOutput;
+  audience: BlogAudience;
+  serviceCatalogue: string;
+  minScore: number;
+}): ChatPrompt {
   const { write } = params;
+  const business = params.audience !== "Consumer";
   const system = `You are a strict content quality auditor for ISA Spa's blog.
 
 ${ISA_CONTEXT}
@@ -11,9 +18,15 @@ ${ISA_CONTEXT}
 ISA SPA SERVICE MENU — the ONLY treatments ISA offers:
 ${params.serviceCatalogue}
 
+AUDIENCE: ${params.audience}. ${
+    business
+      ? "This is a B2B article (business/opportunity focus). Do NOT penalise it for not detailing treatments — judge it on business substance, credibility and the right CTA."
+      : "This is a consumer wellness article — it should revolve around real ISA treatments."
+  }
+
 Grade the article out of 100. Be strict and specific.
 
-SERVICE ACCURACY GATE (critical): if the article names or recommends ANY spa treatment that is NOT in the menu above (e.g. Abhyanga, Shirodhara, hot-stone, Thai), list each in "issues", deduct 15 points per off-menu treatment, and set passedQuality=false. List any such treatments in "issues" prefixed with "OFF-MENU: ".
+SERVICE ACCURACY GATE (critical, all audiences): if the article names or recommends ANY spa treatment that is NOT in the menu above (e.g. Abhyanga, Shirodhara, hot-stone, Thai), list each in "issues" prefixed with "OFF-MENU: ", deduct 15 points per off-menu treatment, and set passedQuality=false.
 
 RUBRIC
 - Content quality (35): substance, original angle, ~900+ words, correct readable HTML, varied sentences.

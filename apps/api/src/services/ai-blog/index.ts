@@ -1,5 +1,5 @@
 import { prisma, Prisma } from "@isa/db";
-import type { GenerationTrigger } from "@isa/shared";
+import type { BlogAudience, GenerationTrigger } from "@isa/shared";
 import { env } from "../../config/env.js";
 import { logger } from "../../lib/logger.js";
 import { chatJson } from "./openrouter.js";
@@ -15,6 +15,7 @@ export type GenerateOptions = {
   topic?: string;
   keywords?: string[];
   pillar?: string;
+  audience?: BlogAudience;
   trigger: GenerationTrigger;
   triggeredBy?: number;
 };
@@ -77,8 +78,9 @@ export async function executeRun(runId: number, opts: GenerateOptions): Promise<
   try {
     // 1) Research / topic selection
     await setStep("researching");
-    const pillar = await pickPillar(opts.pillar);
-    ctx.pillar = pillar;
+    const picked = await pickPillar(opts.pillar, opts.audience);
+    ctx.pillar = picked.pillar;
+    ctx.audience = picked.audience;
     const [existingTitles, publishedSlugs, serviceCatalogue] = await Promise.all([
       getExistingTitles(),
       getPublishedSlugs(),
@@ -87,7 +89,8 @@ export async function executeRun(runId: number, opts: GenerateOptions): Promise<
     const research = await chatJson(
       "researcher",
       researcherPrompt({
-        pillar,
+        audience: picked.audience,
+        pillar: picked.pillar,
         manualTopic: opts.topic,
         manualKeywords: opts.keywords,
         existingTitles,
@@ -99,7 +102,10 @@ export async function executeRun(runId: number, opts: GenerateOptions): Promise<
     );
     track(ctx, "researcher", research);
     ctx.research = research.data;
-    await prisma.blogGenerationRun.update({ where: { id: runId }, data: { topic: research.data.topic, pillar } });
+    await prisma.blogGenerationRun.update({
+      where: { id: runId },
+      data: { topic: research.data.topic, pillar: picked.pillar },
+    });
 
     // 2) Write → 3) SEO → 4) Quality, with one retry if QA fails
     let retryNotes: string | undefined;
@@ -107,7 +113,7 @@ export async function executeRun(runId: number, opts: GenerateOptions): Promise<
       await setStep(attempt === 0 ? "writing" : "rewriting");
       const write = await chatJson(
         "writer",
-        writerPrompt({ research: research.data, publishedSlugs, serviceCatalogue, retryNotes }),
+        writerPrompt({ audience: picked.audience, research: research.data, publishedSlugs, serviceCatalogue, retryNotes }),
         writeOutput,
       );
       track(ctx, "writer", write);
@@ -134,7 +140,7 @@ export async function executeRun(runId: number, opts: GenerateOptions): Promise<
       await setStep("quality");
       let q: QualityOutput | null = null;
       try {
-        const quality = await chatJson("quality", qualityPrompt({ write: write.data, serviceCatalogue, minScore: env.aiBlog.minQuality }), qualityOutput);
+        const quality = await chatJson("quality", qualityPrompt({ write: write.data, audience: picked.audience, serviceCatalogue, minScore: env.aiBlog.minQuality }), qualityOutput);
         track(ctx, "quality", quality);
         q = quality.data;
       } catch (err) {

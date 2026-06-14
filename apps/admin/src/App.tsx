@@ -21,8 +21,11 @@ import {
 
 /** Routed CMS shell: public /login, everything else behind RequireAuth. */
 export function App() {
+  // Honour the Vite base path so the SPA can be served under a subpath
+  // (e.g. /cms in production) as well as at root in local dev.
+  const basename = import.meta.env.BASE_URL.replace(/\/$/, "");
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={basename}>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route

@@ -1,7 +1,9 @@
-import { ISA_CONTEXT } from "../context.js";
+import type { BlogAudience } from "@isa/shared";
+import { ISA_CONTEXT, audienceBrief } from "../context.js";
 import type { ChatPrompt } from "../openrouter.js";
 
 export function researcherPrompt(params: {
+  audience: BlogAudience;
   pillar: string;
   manualTopic?: string;
   manualKeywords?: string[];
@@ -10,23 +12,27 @@ export function researcherPrompt(params: {
   serviceCatalogue: string;
   season: string;
 }): ChatPrompt {
+  const a = audienceBrief(params.audience);
   const system = `You are the content strategist for ISA Spa.
 
 ${ISA_CONTEXT}
 
-ISA SPA SERVICE MENU — the ONLY treatments ISA offers:
+ISA SPA SERVICE MENU — the ONLY treatments ISA offers (reference for accuracy):
 ${params.serviceCatalogue}
 
-Pick ONE specific, compelling blog topic and produce a research brief.
+AUDIENCE: ${params.audience}. You are writing for ${a.reader}.
+ANGLE: ${a.focus}
+ACCURACY: ${a.grounding}
+
+Pick ONE specific, compelling blog topic for this audience and produce a research brief.
 
 RULES
-- The topic MUST centre on treatments from the service menu above (or general wellness that naturally leads to them). NEVER invent or imply treatments ISA does not offer (e.g. do NOT propose Abhyanga, Shirodhara, hot-stone, Thai, prenatal, etc. unless they appear in the menu). When you reference a treatment, use its EXACT menu name.
-- ${params.manualTopic ? `The editor requested: "${params.manualTopic}". If it maps to a menu treatment, refine it; if it names a treatment ISA does NOT offer, REFRAME it onto the closest menu treatment and note that in the brief.` : "Choose a fresh, specific angle with genuine search intent (how-to, benefits, comparisons, guides) anchored to a menu treatment."}
-- Stay within the content pillar given.
+- ${params.manualTopic ? `The editor requested: "${params.manualTopic}". Refine it into a strong, specific angle for the ${params.audience} audience. If it implies a treatment ISA does NOT offer, reframe accordingly.` : "Choose a fresh, specific angle with genuine search intent (how-to, benefits, comparisons, guides, trends)."}
+- Stay within the content pillar given and the ${params.audience} angle.
 - Consider seasonality — it is currently ${params.season} in India.
 - Do NOT duplicate or closely overlap any existing post title listed below.
-- Suggest internal links only from the provided published slugs (or leave empty).
-- Indian audience, en-IN, ₹ pricing context. No medical claims.
+- Suggest internal links only from the provided published slugs (or leave empty); ${a.linkHint}.
+- Indian audience, en-IN, ₹ context where relevant.
 
 OUTPUT — return ONLY valid JSON, no markdown:
 {
@@ -37,7 +43,8 @@ OUTPUT — return ONLY valid JSON, no markdown:
   "peopleAlsoAsk": ["natural question 1?", "question 2?", "question 3?", "question 4?"]
 }`;
 
-  const user = `Content pillar: ${params.pillar}
+  const user = `Audience: ${params.audience}
+Content pillar: ${params.pillar}
 ${params.manualKeywords?.length ? `Editor keywords: ${params.manualKeywords.join(", ")}` : ""}
 
 Published slugs available for internal links:

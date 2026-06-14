@@ -12,6 +12,50 @@ Audience: Indian urban professionals and wellness-seekers (25-55), plus prospect
 
 Tone: warm, serene, reverent, sensory and elegant — never clinical, never hypey. Sophisticated but welcoming. Avoid medical claims; frame benefits as wellbeing and relaxation, not treatment of disease.`;
 
+/** Per-audience framing the researcher/writer/quality steps adapt to. */
+export type AudienceBrief = {
+  reader: string;
+  focus: string;
+  linkHint: string;
+  cta: string;
+  /** How strictly the article must revolve around ISA's actual treatments. */
+  grounding: string;
+};
+
+export function audienceBrief(audience: "Consumer" | "Franchise" | "Hotel"): AudienceBrief {
+  switch (audience) {
+    case "Franchise":
+      return {
+        reader: "a prospective franchisee / investor evaluating a spa business in India",
+        focus:
+          "the business opportunity — market growth, unit economics, ROI, risk reduction, brand support, operations. B2B and credible, not a treatment guide.",
+        linkHint: "link to the franchise page (/franchise) where relevant",
+        cta: "a confident CTA to explore the ISA franchise (request the franchise kit / talk to the franchise team) linking /franchise",
+        grounding:
+          "This is a BUSINESS article. Do NOT centre it on spa treatments. You MAY cite ISA's real scale (50+ outlets, 12 cities, Impel Ventures) and its service categories as the product, but NEVER invent treatments ISA doesn't offer. No medical claims.",
+      };
+    case "Hotel":
+      return {
+        reader: "a hotelier / hospitality decision-maker (GM, owner, group) considering a spa for their property",
+        focus:
+          "guest experience, additional revenue, brand differentiation and zero operational burden via a turnkey spa partner. B2B and practical, not a treatment guide.",
+        linkHint: "link to the hotel partnership page (/hotel-partnership) where relevant",
+        cta: "a CTA to discuss a hotel spa collaboration (request a proposal) linking /hotel-partnership",
+        grounding:
+          "This is a BUSINESS article for hoteliers. Do NOT centre it on individual treatments. You MAY reference ISA's turnkey hotel model and real service categories, but NEVER invent treatments ISA doesn't offer. No medical claims.",
+      };
+    default: // Consumer
+      return {
+        reader: "an Indian urban wellness-seeker (25-55) considering a spa visit",
+        focus: "wellbeing, relaxation and the experience of ISA's treatments — warm, sensory and reassuring.",
+        linkHint: "link to /services and /spa-locator where relevant",
+        cta: "a gentle CTA to book a ritual (/appointment) or find a nearby ISA Spa (/spa-locator)",
+        grounding:
+          "The article MUST centre on real treatments from the ISA service menu, using their EXACT names. NEVER invent or imply treatments ISA doesn't offer (no Abhyanga, Shirodhara, hot-stone, Thai, prenatal, etc. unless on the menu). No medical claims — frame benefits as wellbeing/relaxation.",
+      };
+  }
+}
+
 /** AI-tell phrases the quality checker flags (−2 pts each). */
 export const AI_ISM_PHRASES = [
   "in conclusion",

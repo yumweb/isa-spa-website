@@ -1,5 +1,5 @@
 import { prisma } from "@isa/db";
-import { CONTENT_PILLARS } from "@isa/shared";
+import { CONTENT_PILLARS, type BlogAudience, type ContentPillar } from "@isa/shared";
 
 /**
  * The real ISA Spa service menu, formatted for prompts. This is the SOURCE OF
@@ -71,11 +71,24 @@ export function isDuplicate(candidate: string, existing: string[], threshold = 0
 }
 
 /**
- * Choose a pillar for a run. Explicit pillar wins; otherwise rotate by the
- * count of existing posts so scheduled runs cycle through pillars over time.
+ * Choose a pillar + audience for a run. An explicit pillar/audience wins;
+ * otherwise rotate by the post count so scheduled runs cycle through every
+ * audience and pillar over time. An explicit pillar string is matched back to
+ * a known pillar to recover its audience (falls back to the given/Consumer).
  */
-export async function pickPillar(explicit?: string): Promise<string> {
-  if (explicit) return explicit;
+export async function pickPillar(
+  explicitPillar?: string,
+  explicitAudience?: BlogAudience,
+): Promise<ContentPillar> {
+  if (explicitPillar) {
+    const match = CONTENT_PILLARS.find((p) => p.pillar === explicitPillar);
+    return match ?? { audience: explicitAudience ?? "Consumer", pillar: explicitPillar };
+  }
+  if (explicitAudience) {
+    const pool = CONTENT_PILLARS.filter((p) => p.audience === explicitAudience);
+    const count = await prisma.blogPost.count();
+    return pool[count % pool.length]!;
+  }
   const count = await prisma.blogPost.count();
   return CONTENT_PILLARS[count % CONTENT_PILLARS.length]!;
 }

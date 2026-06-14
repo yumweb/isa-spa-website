@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { PUBLISH_STATUSES, ROLES } from "../constants.js";
+import { BLOG_AUDIENCES, PUBLISH_STATUSES, ROLES } from "../constants.js";
 
 /** Admin-side content schemas for CMS CRUD (validated in the API). */
 
@@ -134,6 +134,7 @@ export const aiBlogGenerateSchema = z.object({
   topic: z.string().trim().max(300).optional(),
   keywords: z.array(z.string().trim().max(80)).max(12).optional(),
   pillar: z.string().trim().max(200).optional(),
+  audience: z.enum(BLOG_AUDIENCES).optional(),
 });
 export type AiBlogGenerateInput = z.infer<typeof aiBlogGenerateSchema>;
 
