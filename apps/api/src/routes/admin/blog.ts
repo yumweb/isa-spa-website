@@ -11,4 +11,5 @@ export const blogAdminRouter = createCrudRouter({
   mapInput: mapBlogInput,
   // newest first; drafts visible to admin (no status filter)
   listArgs: { orderBy: { createdAt: "desc" } },
+  revalidatePaths: (item) => ["/blog", `/blog/${item.slug}`],
 });

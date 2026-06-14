@@ -8,4 +8,5 @@ export const testimonialsAdminRouter = createCrudRouter({
   name: "testimonial",
   schema: testimonialSchema,
   listArgs: { orderBy: { order: "asc" } },
+  revalidatePaths: () => ["/"], // testimonials render on the home page
 });

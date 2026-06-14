@@ -2,6 +2,7 @@ import { Router } from "express";
 import { z } from "zod";
 import { HttpError } from "../../middleware/error.js";
 import { writeAudit } from "../../services/audit.js";
+import { revalidate } from "../../services/revalidate.js";
 
 /**
  * Minimal structural view of a Prisma model delegate. Prisma's generated
@@ -34,6 +35,8 @@ interface CrudOptions {
   listArgs?: Record<string, unknown>;
   /** Extra args for single fetch (include). */
   getArgs?: Record<string, unknown>;
+  /** Public web paths to revalidate after a mutation (e.g. ["/blog", `/blog/${item.slug}`]). */
+  revalidatePaths?: (item: Record<string, unknown>) => string[];
 }
 
 /** Cast a concrete Prisma delegate to the structural `Delegate` type. */
@@ -53,6 +56,9 @@ export function createCrudRouter(opts: CrudOptions): Router {
   const router = Router();
   const map = opts.mapInput ?? identity;
   const updateSchema = opts.schema.partial();
+  const bust = (item: Record<string, unknown>) => {
+    if (opts.revalidatePaths) revalidate(opts.revalidatePaths(item));
+  };
 
   router.get("/", async (_req, res, next) => {
     try {
@@ -79,6 +85,7 @@ export function createCrudRouter(opts: CrudOptions): Router {
       const data = map(opts.schema.parse(req.body));
       const item = (await opts.model.create({ data })) as { id: number };
       await writeAudit(req, `${opts.name}.create`, `${opts.entity}:${item.id}`);
+      bust(item as Record<string, unknown>);
       res.status(201).json({ item });
     } catch (e) {
       next(e);
@@ -91,6 +98,7 @@ export function createCrudRouter(opts: CrudOptions): Router {
       const data = map(updateSchema.parse(req.body));
       const item = await opts.model.update({ where: { id }, data });
       await writeAudit(req, `${opts.name}.update`, `${opts.entity}:${id}`);
+      bust(item as Record<string, unknown>);
       res.json({ item });
     } catch (e) {
       next(e);
@@ -100,8 +108,9 @@ export function createCrudRouter(opts: CrudOptions): Router {
   router.delete("/:id", async (req, res, next) => {
     try {
       const id = idParam.parse(req.params.id);
-      await opts.model.delete({ where: { id } });
+      const item = await opts.model.delete({ where: { id } });
       await writeAudit(req, `${opts.name}.delete`, `${opts.entity}:${id}`);
+      bust(item as Record<string, unknown>);
       res.json({ ok: true });
     } catch (e) {
       next(e);

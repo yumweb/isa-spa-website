@@ -51,6 +51,11 @@ export const env = {
   },
   pexelsKey: process.env.PEXELS_API_KEY ?? "",
   unsplashKey: process.env.UNSPLASH_ACCESS_KEY ?? "",
+  // On-demand ISR revalidation of the Next web app after CMS content changes.
+  revalidate: {
+    url: process.env.REVALIDATE_URL ?? "",
+    secret: process.env.REVALIDATE_SECRET ?? "",
+  },
   aiBlog: {
     enabled: process.env.AI_BLOG_ENABLED === "true",
     cron: process.env.AI_BLOG_CRON ?? "0 3 * * 1", // weekly, Mon 03:00

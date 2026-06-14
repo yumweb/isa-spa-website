@@ -12,4 +12,7 @@ export const servicesAdminRouter = createCrudRouter({
     include: { category: { select: { id: true, name: true, slug: true } } },
   },
   getArgs: { include: { category: { select: { id: true, name: true, slug: true } } } },
+  // a service's category slug isn't on the mutation result, so refresh the
+  // services index (category detail pages catch up on their own window).
+  revalidatePaths: () => ["/services"],
 });

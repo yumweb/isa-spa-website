@@ -10,4 +10,5 @@ export const locationsAdminRouter = createCrudRouter({
   schema: locationSchema,
   mapInput: flattenSeo,
   listArgs: { orderBy: [{ city: "asc" }, { order: "asc" }] },
+  revalidatePaths: (item) => ["/spa-locator", `/spa-locator/${item.slug}`],
 });

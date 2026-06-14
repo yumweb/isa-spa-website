@@ -8,4 +8,5 @@ export const careersAdminRouter = createCrudRouter({
   name: "career",
   schema: jobOpeningSchema,
   listArgs: { orderBy: { createdAt: "desc" } },
+  revalidatePaths: (item) => ["/careers", `/careers/${item.slug}`],
 });

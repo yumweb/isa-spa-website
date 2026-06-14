@@ -8,4 +8,5 @@ export const galleryAdminRouter = createCrudRouter({
   name: "gallery",
   schema: galleryItemSchema,
   listArgs: { orderBy: [{ album: "asc" }, { order: "asc" }] },
+  revalidatePaths: () => ["/gallery"],
 });

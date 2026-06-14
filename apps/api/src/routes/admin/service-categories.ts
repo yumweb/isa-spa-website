@@ -15,4 +15,5 @@ export const serviceCategoriesAdminRouter = createCrudRouter({
     include: { services: { orderBy: { order: "asc" } } },
   },
   getArgs: { include: { services: { orderBy: { order: "asc" } } } },
+  revalidatePaths: (item) => ["/services", `/services/${item.slug}`],
 });
