@@ -19,6 +19,30 @@ body {
   font-family: "Mulish", system-ui, sans-serif;
   color: #6e6f62;
   -webkit-font-smoothing: antialiased;
+  /* Guard against accidental horizontal scroll on mobile (wide headings/eyebrows). */
+  overflow-x: hidden;
+}
+
+/* On-brand focus: no jarring blue default ring; subtle gold ring for keyboard users. */
+.isa-mobile-toggle:focus {
+  outline: none;
+}
+.isa-mobile-toggle:focus-visible {
+  outline: 2px solid #c19a4b;
+  outline-offset: 2px;
+}
+
+/* Scale the large display headings down on phones so they wrap cleanly and
+   never overflow the viewport (inline font-size needs !important to override). */
+@media (max-width: 600px) {
+  h1 {
+    font-size: 40px !important;
+    line-height: 1.14 !important;
+  }
+  h2 {
+    font-size: 30px !important;
+    line-height: 1.18 !important;
+  }
 }
 ::selection {
   background: #c19a4b;

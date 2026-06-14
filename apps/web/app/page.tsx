@@ -52,7 +52,6 @@ export default async function HomePage() {
   const featured = services.slice(0, 4).map((c) => ({
     title: c.name.replace(/ (Treatments|Treatment)$/i, ""),
     desc: c.tagline ?? c.services[0]?.description ?? "",
-    from: c.services[0]?.price ? `From ${c.services[0].price}` : "",
     photo: c.slug.replace(/-/g, " "),
     slug: c.slug,
   }));
@@ -214,7 +213,6 @@ export default async function HomePage() {
                 <div style={{ padding: "22px 20px 24px" }}>
                   <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 600, fontSize: 22, color: "#3F3B30", margin: "0 0 8px" }}>{svc.title}</h3>
                   <p style={{ fontSize: 13.5, lineHeight: 1.6, margin: "0 0 14px" }}>{svc.desc}</p>
-                  {svc.from && <span style={{ fontSize: 12, letterSpacing: "0.08em", textTransform: "uppercase", color: "#B0863A" }}>{svc.from}</span>}
                 </div>
               </Link>
             ))}

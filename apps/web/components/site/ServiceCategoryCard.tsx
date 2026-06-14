@@ -85,19 +85,7 @@ export function ServiceCategoryCard({ cat }: { cat: ServiceCategory }) {
                   </p>
                 )}
               </div>
-              {it.price && (
-                <span
-                  style={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: 22,
-                    fontWeight: 600,
-                    color: "#B0863A",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {it.price}
-                </span>
-              )}
+              {/* Pricing intentionally not shown — it varies by location. */}
             </div>
           ))}
         </div>
