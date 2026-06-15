@@ -14,6 +14,17 @@ export const metadata = pageMeta({
 
 export const revalidate = 600;
 
+// Bookable slots: 10:00 AM to 8:00 PM, every 30 minutes, in AM/PM format.
+const TIME_SLOTS: { value: string; label: string }[] = [];
+for (let mins = 10 * 60; mins <= 20 * 60; mins += 30) {
+  const h = Math.floor(mins / 60);
+  const m = mins % 60;
+  const ampm = h < 12 ? "AM" : "PM";
+  const h12 = h % 12 === 0 ? 12 : h % 12;
+  const label = `${h12}:${String(m).padStart(2, "0")} ${ampm}`;
+  TIME_SLOTS.push({ value: label, label });
+}
+
 export default async function AppointmentPage() {
   const locations = await getLocations().catch(() => []);
 
@@ -29,7 +40,7 @@ export default async function AppointmentPage() {
     },
     { name: "service", label: "Therapy", placeholder: "e.g. Deep Tissue Massage" },
     { name: "preferredDate", label: "Preferred date", type: "date" },
-    { name: "preferredTime", label: "Preferred time", type: "time" },
+    { name: "preferredTime", label: "Preferred time", type: "select", placeholder: "Choose a slot (10 AM–8 PM)", options: TIME_SLOTS },
     { name: "notes", label: "Anything we should know?", type: "textarea", placeholder: "Optional notes" },
   ];
 
