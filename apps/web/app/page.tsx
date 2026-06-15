@@ -196,6 +196,23 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* ===== BREATHE STATEMENT ===== */}
+      <section style={{ padding: "84px 40px 92px", textAlign: "center" }}>
+        <h2
+          style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontWeight: 500,
+            fontSize: 58,
+            lineHeight: 1.15,
+            color: "#3F3B30",
+            margin: 0,
+            letterSpacing: "-0.01em",
+          }}
+        >
+          Pause. Breathe. <em style={{ fontStyle: "italic", color: "#B0863A" }}>Reconnect.</em>
+        </h2>
+      </section>
+
       {/* ===== SIGNATURE SERVICES ===== */}
       <section style={{ background: "#FBF7EF", borderTop: "1px solid #EFE6D3", borderBottom: "1px solid #EFE6D3" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto", padding: "84px 40px" }}>
