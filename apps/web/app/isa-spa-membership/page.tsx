@@ -8,7 +8,7 @@ import { Eyebrow } from "@/components/site/primitives";
 export const metadata = pageMeta({
   title: "The Elite Retreat Circle — ISA Spa Membership",
   description:
-    "Join The Elite Retreat Circle. Five ISA Spa membership tiers with prepaid spa hours, VIP treatment-room priority, exclusive discounts and priority scheduling. More pampering. More luxury. More you.",
+    "Join The Elite Retreat Circle. ISA Spa membership tiers with prepaid spa hours, VIP treatment-room priority, exclusive discounts and priority scheduling. More pampering. More luxury. More you.",
   path: "/isa-spa-membership",
 });
 
@@ -26,8 +26,6 @@ type Plan = {
 
 const PLANS: Plan[] = [
   { slug: "perfect-bliss", name: "Perfect Bliss", price: "₹10,000", validity: "3 months", hours: "7 spa hours", vip: false },
-  { slug: "radiant-pearl", name: "Radiant Pearl", price: "₹15,000", validity: "3 months", hours: "11 spa hours", vip: false },
-  { slug: "splendid-silver", name: "Splendid Silver", price: "₹20,000", validity: "6 months", hours: "15 spa hours", vip: true },
   { slug: "royal-gold", name: "Royal Gold", price: "₹25,000", validity: "9 months", hours: "20 spa hours", vip: true, featured: true },
   { slug: "majestic-platinum", name: "Majestic Platinum", price: "₹50,000", validity: "12 months", hours: "45 spa hours", vip: true },
 ];
@@ -67,7 +65,7 @@ export default function MembershipPage() {
         <div style={{ textAlign: "center", marginBottom: 48 }}>
           <Eyebrow>Choose your circle</Eyebrow>
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 500, fontSize: 46, color: "#3F3B30", margin: 0 }}>
-            Five tiers of indulgence
+            Three tiers of indulgence
           </h2>
         </div>
         <div

@@ -206,20 +206,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ===== IMPEL VENTURES ===== */}
-      <section style={{ maxWidth: 1100, margin: "0 auto", padding: "60px 40px 90px" }}>
-        <div
-          style={{ border: "1px solid #ECE2CF", borderRadius: 22, padding: "46px 44px", textAlign: "center", background: "#fff" }}
-        >
-          <div style={{ fontSize: 12, letterSpacing: "0.22em", textTransform: "uppercase", color: "#B0863A", marginBottom: 14 }}>
-            An Impel Ventures Brand
-          </div>
-          <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 26, lineHeight: 1.5, color: "#4A4738", margin: "0 auto", maxWidth: 760 }}>
-            Isa Spa is an initiative of the Impel Ventures Group &mdash; a pioneer in Indian franchising behind Studio11
-            Salon &amp; Spa, Impel Overseas, DentalOne and GaadiSaaf.
-          </p>
-        </div>
-      </section>
     </main>
   );
 }

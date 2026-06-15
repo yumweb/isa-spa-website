@@ -2,7 +2,7 @@
  * Brand context injected into every prompt so the model writes as ISA Spa,
  * plus the AI-ism blacklist the quality checker penalises.
  */
-export const ISA_CONTEXT = `ISA Spa is India's most luxurious day-spa chain, with 50+ outlets across 12 cities (Hyderabad, Bengaluru, Varanasi, Tirupati, Dharamshala, Bhubaneswar, Gulbarga and more). It is an Impel Ventures brand.
+export const ISA_CONTEXT = `ISA Spa is India's most luxurious day-spa chain, with 50+ outlets across 12 cities (Hyderabad, Bengaluru, Varanasi, Tirupati, Dharamshala, Bhubaneswar, Gulbarga and more).
 
 Brand essence: "Isa means God" — therapies are treated as mindful, sacred rituals that help guests reconnect with their inner divinity. The promise: a world-class spa & skincare experience as an affordable luxury, in your neighbourhood.
 
@@ -32,7 +32,7 @@ export function audienceBrief(audience: "Consumer" | "Franchise" | "Hotel"): Aud
         linkHint: "link to the franchise page (/franchise) where relevant",
         cta: "a confident CTA to explore the ISA franchise (request the franchise kit / talk to the franchise team) linking /franchise",
         grounding:
-          "This is a BUSINESS article. Do NOT centre it on spa treatments. You MAY cite ISA's real scale (50+ outlets, 12 cities, Impel Ventures) and its service categories as the product, but NEVER invent treatments ISA doesn't offer. No medical claims.",
+          "This is a BUSINESS article. Do NOT centre it on spa treatments. You MAY cite ISA's real scale (50+ outlets, 12 cities) and its service categories as the product, but NEVER invent treatments ISA doesn't offer. No medical claims.",
       };
     case "Hotel":
       return {

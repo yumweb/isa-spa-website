@@ -7,7 +7,7 @@ import { franchiseWhy, franchiseSteps } from "@/lib/marketing";
 export const metadata = pageMeta({
   title: "Own an ISA Spa Franchise — A Proven Wellness Business",
   description:
-    "Partner with India's most loved luxury day spa. Proven unit economics across 50+ spas, end-to-end training, turnkey fit-out and marketing — backed by Impel Ventures.",
+    "Partner with India's most loved luxury day spa. Proven unit economics across 50+ spas, end-to-end training, turnkey fit-out and marketing support.",
   path: "/franchise",
 });
 
@@ -83,8 +83,8 @@ export default function FranchisePage() {
               Own a piece of India&rsquo;s most loved spa brand
             </h1>
             <p style={{ fontSize: 18, lineHeight: 1.7, color: "#D8CCB6", maxWidth: 480, margin: "0 0 32px" }}>
-              Partner with a trusted, profitable brand backed by Impel Ventures. We hand you a proven model, end-to-end
-              training and full marketing support.
+              Partner with a trusted, profitable brand. We hand you a proven model, end-to-end training and full
+              marketing support.
             </p>
             <div style={{ display: "flex", gap: 28, flexWrap: "wrap" }}>
               {stats.map(([n, l]) => (

@@ -51,8 +51,8 @@ export const franchiseWhy = [
   },
   {
     num: "06",
-    title: "Backed by Impel Ventures",
-    desc: "The group behind Studio11, Impel Overseas, DentalOne & GaadiSaaf — a pioneer in Indian franchising.",
+    title: "Ongoing operational support",
+    desc: "Dedicated guidance on staffing, supply chain, SOPs and quality — so your spa runs to ISA standards from day one.",
   },
 ] as const;
 

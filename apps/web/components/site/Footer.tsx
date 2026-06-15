@@ -109,7 +109,7 @@ export function Footer() {
           color: "#8E8169",
         }}
       >
-        <span>&copy; 2026 Isa Spa Pvt. Ltd. &middot; An Impel Ventures brand. All rights reserved.</span>
+        <span>&copy; 2026 Isa Spa Pvt. Ltd. All rights reserved.</span>
         <span style={{ display: "flex", gap: 20 }}>
           <Link href="/privacy-policy" style={{ color: "#8E8169" }}>Privacy Policy</Link>
           <Link href="/terms" style={{ color: "#8E8169" }}>Terms &amp; Conditions</Link>
