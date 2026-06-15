@@ -1,9 +1,9 @@
 import type { ReactNode } from "react";
 
 /**
- * Shared shell for legal pages: approved radial hero with the page title, a
- * clearly-flagged placeholder notice, and the copy rendered via `.richtext`.
- * Body copy is placeholder pending the client's finalised legal text.
+ * Shared shell for legal pages: approved radial hero with the page title and
+ * the copy rendered via `.richtext`. Body copy is migrated verbatim from the
+ * live isaspa.in legal pages (privacy, terms, refund).
  */
 export function LegalPage({
   title,
@@ -24,22 +24,6 @@ export function LegalPage({
       </section>
 
       <section style={{ maxWidth: 760, margin: "0 auto", padding: "48px 40px 90px" }}>
-        <div
-          style={{
-            background: "#FBF7EF",
-            border: "1px solid #EFE6D3",
-            borderRadius: 14,
-            padding: "16px 20px",
-            fontSize: 14,
-            lineHeight: 1.6,
-            color: "#6E6F62",
-            marginBottom: 36,
-          }}
-        >
-          <strong style={{ color: "#3F3B30" }}>Placeholder — final copy TBD by client.</strong> The wording below is a
-          working draft; ISA Spa will provide the finalised legal text before launch.
-        </div>
-
         <div className="richtext">{children}</div>
       </section>
     </>
