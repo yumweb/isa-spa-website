@@ -6,7 +6,7 @@ import { Hero } from "@/components/Hero";
 export const metadata = pageMeta({
   title: "Journal — Wellness & Self-care | ISA Spa",
   description:
-    "Stories, rituals and wellness wisdom from ISA Spa. Tips on massage, skincare, self-care and living well, from India's luxury day spa.",
+    "Stories, rituals and wellness wisdom from ISA Spa. Tips on massage, skincare, self-care and living well, from India's luxury spa.",
   path: "/blog",
 });
 

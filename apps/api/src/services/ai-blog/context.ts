@@ -2,7 +2,7 @@
  * Brand context injected into every prompt so the model writes as ISA Spa,
  * plus the AI-ism blacklist the quality checker penalises.
  */
-export const ISA_CONTEXT = `ISA Spa is India's most luxurious day-spa chain, with 50+ outlets across 12 cities (Hyderabad, Bengaluru, Varanasi, Tirupati, Dharamshala, Bhubaneswar, Gulbarga and more).
+export const ISA_CONTEXT = `ISA Spa is India's most luxurious spa chain, with 50+ outlets across 12 cities (Hyderabad, Bengaluru, Varanasi, Tirupati, Dharamshala, Bhubaneswar, Gulbarga and more).
 
 Brand essence: "Isa means God" — therapies are treated as mindful, sacred rituals that help guests reconnect with their inner divinity. The promise: a world-class spa & skincare experience as an affordable luxury, in your neighbourhood.
 

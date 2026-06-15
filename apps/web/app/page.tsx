@@ -5,9 +5,9 @@ import { pageMeta } from "@/lib/seo";
 import { Photo, Eyebrow } from "@/components/site/primitives";
 
 export const metadata = pageMeta({
-  title: "ISA Spa — India's Luxury Day Spa",
+  title: "ISA Spa — India's Luxury Spa",
   description:
-    "Isa means God. India's luxury day spa with 50+ locations — signature therapies, facials, foot spa and body rituals. Inspired by the Divine. Created for You.",
+    "Isa means God. India's luxury spa with 50+ locations — signature therapies, facials, foot spa and body rituals. Inspired by the Divine. Created for You.",
   path: "/",
 });
 
@@ -76,7 +76,7 @@ export default async function HomePage() {
           <div style={eyebrowWrap}>
             <span style={{ height: 1, width: 38, background: "#C19A4B" }} />
             <span style={{ fontSize: 12, letterSpacing: "0.28em", textTransform: "uppercase", color: "#A8823A" }}>
-              India&rsquo;s Luxury Day Spa &middot; 50+ Locations
+              India&rsquo;s Luxury Spa &middot; 50+ Locations
             </span>
           </div>
           <h1

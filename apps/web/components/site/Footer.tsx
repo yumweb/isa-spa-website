@@ -59,7 +59,7 @@ export function Footer() {
             isa <span style={{ color: "#D9B25E" }}>spa</span>
           </div>
           <p style={{ fontSize: 14, lineHeight: 1.7, margin: "16px 0 22px", maxWidth: 280, color: "#B6A88E" }}>
-            India&rsquo;s most luxurious day spa chain. World-class spa &amp; skincare, delivered as an affordable luxury in
+            India&rsquo;s most luxurious spa chain. World-class spa &amp; skincare, delivered as an affordable luxury in
             your neighbourhood.
           </p>
           <div style={{ display: "flex", gap: 12 }}>

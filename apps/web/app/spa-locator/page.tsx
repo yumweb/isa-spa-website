@@ -4,7 +4,7 @@ import { LocatorClient } from "./LocatorClient";
 
 export const metadata = pageMeta({
   title: "Spa Locator — Find Your Nearest ISA Spa",
-  description: "There's an ISA Spa near you. Browse our 50+ luxury day spas across India by city.",
+  description: "There's an ISA Spa near you. Browse our 50+ luxury spas across India by city.",
   path: "/spa-locator",
 });
 

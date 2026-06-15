@@ -15,7 +15,7 @@ const mulish = Mulish({ subsets: ["latin"], variable: "--font-mulish", display: 
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
-  title: { default: `${SITE.name} — India's Luxury Day Spa`, template: `%s · ${SITE.name}` },
+  title: { default: `${SITE.name} — India's Luxury Spa`, template: `%s · ${SITE.name}` },
   description: SITE.description,
 };
 

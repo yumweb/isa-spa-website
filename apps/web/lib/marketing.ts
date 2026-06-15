@@ -95,7 +95,7 @@ export const hotelBenefits = [
   },
   {
     title: "Trusted brand on your floor",
-    desc: "Borrow the equity of India's most luxurious day spa chain to differentiate your property.",
+    desc: "Borrow the equity of India's most luxurious spa chain to differentiate your property.",
   },
   {
     title: "Zero operational burden",

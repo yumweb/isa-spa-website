@@ -7,7 +7,7 @@ import { Photo } from "@/components/site/primitives";
 export const metadata = pageMeta({
   title: "Gallery — Inside ISA Spa",
   description:
-    "Step inside ISA Spa. A look at our serene interiors, treatment rooms and signature rituals across India's most loved luxury day spas.",
+    "Step inside ISA Spa. A look at our serene interiors, treatment rooms and signature rituals across India's most loved luxury spas.",
   path: "/gallery",
 });
 

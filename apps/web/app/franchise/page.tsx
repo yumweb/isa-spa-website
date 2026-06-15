@@ -7,7 +7,7 @@ import { franchiseWhy, franchiseSteps } from "@/lib/marketing";
 export const metadata = pageMeta({
   title: "Own an ISA Spa Franchise — A Proven Wellness Business",
   description:
-    "Partner with India's most loved luxury day spa. Proven unit economics across 50+ spas, end-to-end training, turnkey fit-out and marketing support.",
+    "Partner with India's most loved luxury spa. Proven unit economics across 50+ spas, end-to-end training, turnkey fit-out and marketing support.",
   path: "/franchise",
 });
 

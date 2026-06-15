@@ -141,7 +141,7 @@ async function main() {
       key: "site",
       value: {
         name: "ISA Spa",
-        tagline: "India's Luxury Day Spa",
+        tagline: "India's Luxury Spa",
         social: {
           facebook: "https://facebook.com/",
           instagram: "https://instagram.com/",

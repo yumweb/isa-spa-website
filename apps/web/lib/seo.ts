@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const SITE = {
   name: "ISA Spa",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://isaspa.in",
-  description: "India's luxury day spa — signature therapies, facials, body rituals across 50+ outlets.",
+  description: "India's luxury spa — signature therapies, facials, body rituals across 50+ outlets.",
 } as const;
 
 /** Build per-page metadata with sane defaults + canonical. */

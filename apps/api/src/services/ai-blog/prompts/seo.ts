@@ -4,7 +4,7 @@ import type { ResearchOutput, WriteOutput } from "../types.js";
 
 export function seoPrompt(params: { research: ResearchOutput; write: WriteOutput }): ChatPrompt {
   const { research, write } = params;
-  const system = `You are an SEO/AEO specialist for ISA Spa (India's luxury day spa).
+  const system = `You are an SEO/AEO specialist for ISA Spa (India's luxury spa).
 
 ${ISA_CONTEXT}
 
