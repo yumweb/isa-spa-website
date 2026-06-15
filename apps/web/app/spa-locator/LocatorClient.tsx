@@ -128,8 +128,10 @@ export function LocatorClient({ locations }: { locations: Location[] }) {
                     >
                       {loc.city}
                     </span>
-                    <div
+                    <Link
+                      href={`/spa-locator/${loc.slug}`}
                       style={{
+                        display: "inline-block",
                         fontFamily: "'Cormorant Garamond', serif",
                         fontSize: 23,
                         fontWeight: 600,
@@ -139,13 +141,19 @@ export function LocatorClient({ locations }: { locations: Location[] }) {
                       }}
                     >
                       Isa Spa &middot; {loc.area ?? loc.name}
-                    </div>
+                    </Link>
                     <div style={{ fontSize: 14, color: "#8A8478", lineHeight: 1.5 }}>{loc.address}</div>
                     {loc.phone && (
                       <div style={{ fontSize: 13, color: "#B0863A", marginTop: 8, letterSpacing: "0.04em" }}>
                         &#9742; {loc.phone}
                       </div>
                     )}
+                    <Link
+                      href={`/spa-locator/${loc.slug}`}
+                      style={{ display: "inline-block", marginTop: 10, fontSize: 13, color: "#B0863A", fontWeight: 600 }}
+                    >
+                      View details &rarr;
+                    </Link>
                   </div>
                   <div style={{ display: "flex", flexDirection: "column", gap: 8, flexShrink: 0 }}>
                     <Link
@@ -234,7 +242,7 @@ export function LocatorClient({ locations }: { locations: Location[] }) {
             <p style={{ fontSize: 14, color: "#8A8478", margin: "0 0 14px", lineHeight: 1.6 }}>
               We&rsquo;re opening new spas across India every month. Tell us where you&rsquo;d love an Isa Spa.
             </p>
-            <Link href="/contact" style={{ fontSize: 14, color: "#B0863A", fontWeight: 600 }}>
+            <Link href="/contact-us" style={{ fontSize: 14, color: "#B0863A", fontWeight: 600 }}>
               Request a location &rarr;
             </Link>
           </div>

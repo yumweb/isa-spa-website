@@ -19,8 +19,8 @@ export const SITE_CONTACT = {
       "https://www.google.com/maps/search/?api=1&query=" +
       encodeURIComponent("Isa Spa, Gundlapochampalli, Hyderabad, Telangana 500100"),
   },
-  franchise: { name: "Mr. Sudheer Parsha", phone: "79938 66884", phoneHref: "tel:+917993866884" },
-  partnerships: { name: "Mr. Ashok Kumar", phone: "73308 11887", phoneHref: "tel:+917330811887" },
+  franchise: { name: "Mr. Sudheer Parsha", phone: "79938 66884", phoneHref: "tel:+917993866884", email: "sudheerp@isaspa.in" },
+  partnerships: { name: "Mr. Ashok Kumar", phone: "73308 11887", phoneHref: "tel:+917330811887", email: "ashok@isaspa.in" },
   social: {
     facebook: "https://facebook.com/isaspa.wellness",
     instagram: "https://instagram.com/isaspawellness",

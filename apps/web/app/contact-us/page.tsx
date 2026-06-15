@@ -53,8 +53,11 @@ export default function ContactPage() {
           <div style={cardStyle}>
             <div style={labelStyle}>Franchise Enquiries</div>
             <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 600, fontSize: 24, color: "#3F3B30", margin: "0 0 14px" }}>{C.franchise.name}</h3>
-            <p style={{ fontSize: 15, lineHeight: 1.7, margin: "0 0 6px" }}>
+            <p style={{ fontSize: 15, lineHeight: 1.7, margin: "0 0 4px" }}>
               <a href={C.franchise.phoneHref} style={linkStyle}>{C.franchise.phone}</a>
+            </p>
+            <p style={{ fontSize: 15, lineHeight: 1.7, margin: "0 0 12px" }}>
+              <a href={`mailto:${C.franchise.email}`} style={linkStyle}>{C.franchise.email}</a>
             </p>
             <Link href="/franchise" style={{ fontSize: 14, color: "#B0863A", fontWeight: 600 }}>Franchise opportunity &rarr;</Link>
           </div>
@@ -63,8 +66,11 @@ export default function ContactPage() {
           <div style={cardStyle}>
             <div style={labelStyle}>Brand Partnerships</div>
             <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 600, fontSize: 24, color: "#3F3B30", margin: "0 0 14px" }}>{C.partnerships.name}</h3>
-            <p style={{ fontSize: 15, lineHeight: 1.7, margin: "0 0 6px" }}>
+            <p style={{ fontSize: 15, lineHeight: 1.7, margin: "0 0 4px" }}>
               <a href={C.partnerships.phoneHref} style={linkStyle}>{C.partnerships.phone}</a>
+            </p>
+            <p style={{ fontSize: 15, lineHeight: 1.7, margin: "0 0 12px" }}>
+              <a href={`mailto:${C.partnerships.email}`} style={linkStyle}>{C.partnerships.email}</a>
             </p>
             <Link href="/hotel-partnership" style={{ fontSize: 14, color: "#B0863A", fontWeight: 600 }}>Hotel partnership &rarr;</Link>
           </div>
