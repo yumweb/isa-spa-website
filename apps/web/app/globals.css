@@ -168,7 +168,7 @@ h3 {
 .isa-mobile-drawer {
   display: none;
 }
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .isa-desktop-nav {
     display: none !important;
   }

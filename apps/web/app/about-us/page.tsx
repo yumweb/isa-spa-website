@@ -89,39 +89,6 @@ export default function AboutPage() {
         />
       </section>
 
-      {/* ===== VISION / MISSION (espresso) ===== */}
-      <section style={{ background: "linear-gradient(180deg, #2C2219 0%, #221A12 100%)" }}>
-        <div
-          style={{
-            maxWidth: 1100,
-            margin: "0 auto",
-            padding: "78px 40px",
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 50,
-          }}
-          className="isa-grid-split"
-        >
-          <div>
-            <div style={{ fontSize: 12, letterSpacing: "0.2em", textTransform: "uppercase", color: "#D9B25E", marginBottom: 14 }}>
-              Our Vision
-            </div>
-            <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, lineHeight: 1.4, color: "#F4ECDB", margin: 0 }}>
-              To stay on top as a premium spa brand &mdash; reckoned with boutique ambience, luxurious service and fanatic
-              customer care.
-            </p>
-          </div>
-          <div>
-            <div style={{ fontSize: 12, letterSpacing: "0.2em", textTransform: "uppercase", color: "#D9B25E", marginBottom: 14 }}>
-              Our Mission
-            </div>
-            <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, lineHeight: 1.4, color: "#F4ECDB", margin: 0 }}>
-              To make a world-class spa experience an affordable luxury, delivered at the convenience of every
-              customer&rsquo;s neighbourhood.
-            </p>
-          </div>
-        </div>
-      </section>
 
       {/* ===== VALUES ===== */}
       <section style={{ maxWidth: 1240, margin: "0 auto", padding: "84px 40px 40px" }}>

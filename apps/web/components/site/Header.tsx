@@ -7,13 +7,13 @@ import { usePathname } from "next/navigation";
 
 const NAV = [
   { href: "/", label: "Home" },
+  { href: "/about-us", label: "About" },
   { href: "/services", label: "Services" },
   { href: "/spa-locator", label: "Spa Locator" },
   { href: "/isa-spa-membership", label: "Membership" },
-  { href: "/about-us", label: "About" },
-  { href: "/blog", label: "Blog" },
   { href: "/franchise", label: "Franchise" },
-  { href: "/hotel-partnership", label: "Hotels" },
+  { href: "/hotel-partnership", label: "Hotel Partnership" },
+  { href: "/blog", label: "Blog" },
 ];
 
 export function Header() {
